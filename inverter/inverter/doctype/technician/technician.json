@@ -1,0 +1,146 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:technician_name",
+ "creation": "2024-10-11 13:22:28.353937",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "details_section",
+  "technician_name",
+  "column_break_5wq6",
+  "specilization",
+  "personal_info_section",
+  "gender",
+  "column_break_svhf",
+  "certified",
+  "experience",
+  "address_section",
+  "address",
+  "column_break_taca",
+  "city",
+  "state",
+  "contact_section",
+  "contact_number",
+  "column_break_aali",
+  "email"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "technician_name",
+   "fieldtype": "Data",
+   "label": "Technician Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "specilization",
+   "fieldtype": "Data",
+   "label": "Specilization"
+  },
+  {
+   "fieldname": "personal_info_section",
+   "fieldtype": "Section Break",
+   "label": "Personal Info"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "Male\nFemale"
+  },
+  {
+   "fieldname": "certified",
+   "fieldtype": "Select",
+   "label": "Certified",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "experience",
+   "fieldtype": "Data",
+   "label": "Experience"
+  },
+  {
+   "fieldname": "address_section",
+   "fieldtype": "Section Break",
+   "label": "Address"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fieldname": "contact_section",
+   "fieldtype": "Section Break",
+   "label": "Contact"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Phone",
+   "label": "Contact Number",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "column_break_5wq6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_svhf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_taca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_aali",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-11 13:31:49.733850",
+ "modified_by": "Administrator",
+ "module": "Inverter",
+ "name": "Technician",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
