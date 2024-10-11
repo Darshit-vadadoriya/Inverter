@@ -73,17 +73,16 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Stock Balance",
    "link_count": 0,
    "link_to": "Stock Balance",
    "link_type": "Report",
-   "onboard": 0,
-   "report_ref_doctype": "Stock Ledger Entry",
+   "onboard": 1,
    "type": "Link"
   }
  ],
- "modified": "2024-10-11 14:12:04.507552",
+ "modified": "2024-10-11 18:51:38.479854",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Technician Work",
