@@ -251,7 +251,7 @@ fixtures = [
                 "name",
                 "in",
                 [
-                    "Admin","Technician"
+                    "Taxi Admin","Taxi Corporate"
                 ],
             ]
         ],
