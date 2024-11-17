@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-11-17 09:04:25.654634",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "payment_notification_recipient",
+  "column_break_rodi"
+ ],
+ "fields": [
+  {
+   "fieldname": "payment_notification_recipient",
+   "fieldtype": "Table",
+   "label": "Payment Notification Recipient",
+   "options": "Email Recipients"
+  },
+  {
+   "fieldname": "column_break_rodi",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-11-17 09:49:30.259731",
+ "modified_by": "Administrator",
+ "module": "Inverter",
+ "name": "Support Setup",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

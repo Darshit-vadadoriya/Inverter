@@ -44,6 +44,7 @@ app_license = "mit"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"Maintenance Visit" : "public/js/maintenance_visit.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -129,9 +130,10 @@ app_license = "mit"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
+override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+ 	"Maintenance Schedule": "inverter.apis.maintenance_schedule.MaintenanceSchedule"
+}
 
 # Document Events
 # ---------------
@@ -174,10 +176,11 @@ app_license = "mit"
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "inverter.event.get_events"
-# }
-#
+override_whitelisted_methods = {
+	# "frappe.desk.doctype.event.event.get_events": "inverter.event.get_events"
+
+}
+
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
@@ -256,4 +259,12 @@ fixtures = [
             ]
         ],
     },
+    {
+        "dt": "Workflow", 
+        "filters": [
+            ["name", "in", ["Payment Collection"]]
+        ]
+    }
 ]
+
+

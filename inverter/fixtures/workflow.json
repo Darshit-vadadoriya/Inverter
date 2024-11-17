@@ -1,0 +1,115 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow",
+  "document_type": "Payment Collection",
+  "is_active": 1,
+  "modified": "2024-11-17 16:44:48.021064",
+  "name": "Payment Collection",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "All",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Payment Collection",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Draft",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "All",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Payment Collection",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Received By Field Engineer",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "Admin",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Payment Collection",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Approved By Admin",
+    "update_field": "status",
+    "update_value": "Approved By Admin",
+    "workflow_builder_id": "2"
+   },
+   {
+    "allow_edit": "All",
+    "avoid_status_override": 0,
+    "doc_status": "2",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Payment Collection",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Cancel",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": "3"
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Cancel",
+    "allow_self_approval": 1,
+    "allowed": "All",
+    "condition": null,
+    "next_state": "Cancel",
+    "parent": "Payment Collection",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Approved By Admin",
+    "workflow_builder_id": "action-2"
+   },
+   {
+    "action": "Submit",
+    "allow_self_approval": 1,
+    "allowed": "All",
+    "condition": null,
+    "next_state": "Received By Field Engineer",
+    "parent": "Payment Collection",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Draft",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Approved By Admin",
+    "allow_self_approval": 1,
+    "allowed": "Admin",
+    "condition": null,
+    "next_state": "Approved By Admin",
+    "parent": "Payment Collection",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Received By Field Engineer",
+    "workflow_builder_id": null
+   }
+  ],
+  "workflow_data": "[{\"type\":\"state\",\"dimensions\":{\"width\":99,\"height\":52},\"handleBounds\":{\"source\":[{\"id\":\"top\",\"position\":\"top\",\"x\":45.76043701171875,\"y\":-11.333343505859375,\"width\":7,\"height\":7},{\"id\":\"right\",\"position\":\"right\",\"x\":102.86456298828125,\"y\":22.666656494140625,\"width\":7,\"height\":7},{\"id\":\"bottom\",\"position\":\"bottom\",\"x\":45.76043701171875,\"y\":56.66668701171875,\"width\":7,\"height\":7},{\"id\":\"left\",\"position\":\"left\",\"x\":-11.33331298828125,\"y\":22.666656494140625,\"width\":7,\"height\":7}]},\"computedPosition\":{\"x\":712.2355080915045,\"y\":176.3399079741809,\"z\":0},\"id\":\"4\",\"position\":{\"x\":712.2355080915045,\"y\":176.3399079741809}},{\"type\":\"state\",\"dimensions\":{\"width\":161,\"height\":73},\"handleBounds\":{\"source\":[{\"id\":\"top\",\"position\":\"top\",\"x\":77.1666259765625,\"y\":-11.33331298828125,\"width\":7,\"height\":7},{\"id\":\"right\",\"position\":\"right\",\"x\":165.6666259765625,\"y\":33.16668701171875,\"width\":7,\"height\":7},{\"id\":\"bottom\",\"position\":\"bottom\",\"x\":77.1666259765625,\"y\":77.66668701171875,\"width\":7,\"height\":7},{\"id\":\"left\",\"position\":\"left\",\"x\":-11.3333740234375,\"y\":33.16668701171875,\"width\":7,\"height\":7}]},\"computedPosition\":{\"x\":1007.9434023607539,\"y\":274.69783005341833,\"z\":0},\"id\":\"2\",\"position\":{\"x\":1007.9434023607539,\"y\":274.69783005341833}},{\"type\":\"state\",\"dimensions\":{\"width\":98,\"height\":52},\"handleBounds\":{\"source\":[{\"id\":\"top\",\"position\":\"top\",\"x\":45.4271240234375,\"y\":-11.3333740234375,\"width\":7,\"height\":7},{\"id\":\"right\",\"position\":\"right\",\"x\":102.1875,\"y\":22.6666259765625,\"width\":7,\"height\":7},{\"id\":\"bottom\",\"position\":\"bottom\",\"x\":45.4271240234375,\"y\":56.6666259765625,\"width\":7,\"height\":7},{\"id\":\"left\",\"position\":\"left\",\"x\":-11.3333740234375,\"y\":22.6666259765625,\"width\":7,\"height\":7}]},\"computedPosition\":{\"x\":1441.9025967037671,\"y\":418.9424435034508,\"z\":0},\"id\":\"3\",\"position\":{\"x\":1441.9025967037671,\"y\":418.9424435034508}},{\"type\":\"action\",\"dimensions\":{\"width\":68,\"height\":32},\"handleBounds\":{\"source\":[{\"id\":\"top\",\"position\":\"top\",\"x\":30.9271240234375,\"y\":-2.333343505859375,\"width\":6,\"height\":6},{\"id\":\"right\",\"position\":\"right\",\"x\":64.1875,\"y\":13.166656494140625,\"width\":6,\"height\":6},{\"id\":\"bottom\",\"position\":\"bottom\",\"x\":30.9271240234375,\"y\":28.666656494140625,\"width\":6,\"height\":6},{\"id\":\"left\",\"position\":\"left\",\"x\":-2.3333740234375,\"y\":13.166656494140625,\"width\":6,\"height\":6}]},\"computedPosition\":{\"x\":1303.2083018259987,\"y\":391.10088126043456,\"z\":0},\"id\":\"action-2\",\"position\":{\"x\":1303.2083018259987,\"y\":391.10088126043456},\"data\":{\"from_id\":\"2\",\"to_id\":\"3\"}},{\"type\":\"action\",\"dimensions\":{\"width\":69,\"height\":32},\"handleBounds\":{\"source\":[{\"id\":\"top\",\"position\":\"top\",\"x\":31.260498046875,\"y\":-2.333343505859375,\"width\":6,\"height\":6},{\"id\":\"right\",\"position\":\"right\",\"x\":64.8646240234375,\"y\":13.166656494140625,\"width\":6,\"height\":6},{\"id\":\"bottom\",\"position\":\"bottom\",\"x\":31.260498046875,\"y\":28.666656494140625,\"width\":6,\"height\":6},{\"id\":\"left\",\"position\":\"left\",\"x\":-2.333251953125,\"y\":13.166656494140625,\"width\":6,\"height\":6}]},\"computedPosition\":{\"x\":955.4363114486731,\"y\":119.79558452042312,\"z\":0},\"id\":\"action-3\",\"position\":{\"x\":955.4363114486731,\"y\":119.79558452042312},\"data\":{\"from_id\":\"4\",\"to_id\":\"2\"}},{\"sourceHandle\":\"right\",\"targetHandle\":\"left\",\"type\":\"transition\",\"source\":\"2\",\"target\":\"action-2\",\"updatable\":true,\"animated\":true,\"id\":\"vueflow__edge-2right-action-2left\",\"sourceX\":1180.6100283373164,\"sourceY\":311.3645170651371,\"targetX\":1300.8749278025612,\"targetY\":407.2675377545752},{\"sourceHandle\":\"right\",\"targetHandle\":\"left\",\"type\":\"transition\",\"source\":\"action-2\",\"target\":\"3\",\"updatable\":true,\"animated\":true,\"id\":\"vueflow__edge-action-2right-3left\",\"sourceX\":1373.3958018259987,\"sourceY\":407.2675377545752,\"targetX\":1430.5692226803296,\"targetY\":445.1090694800133,\"markerEnd\":{\"type\":\"arrow\",\"width\":15,\"height\":15,\"strokeWidth\":1.5,\"color\":\"#687178\"}},{\"sourceHandle\":\"right\",\"targetHandle\":\"left\",\"type\":\"transition\",\"source\":\"4\",\"target\":\"action-3\",\"updatable\":true,\"animated\":true,\"id\":\"vueflow__edge-4right-action-3left\",\"sourceX\":822.1000710797857,\"sourceY\":202.50656446832153,\"targetX\":953.1030594955481,\"targetY\":135.96224101456374},{\"sourceHandle\":\"right\",\"targetHandle\":\"left\",\"type\":\"transition\",\"source\":\"action-3\",\"target\":\"2\",\"updatable\":true,\"animated\":true,\"id\":\"vueflow__edge-action-3right-2left\",\"sourceX\":1026.3009354721107,\"sourceY\":135.96224101456374,\"targetX\":996.6100283373164,\"targetY\":311.3645170651371,\"markerEnd\":{\"type\":\"arrow\",\"width\":15,\"height\":15,\"strokeWidth\":1.5,\"color\":\"#687178\"}}]",
+  "workflow_name": "Payment Collection",
+  "workflow_state_field": "workflow_state"
+ }
+]

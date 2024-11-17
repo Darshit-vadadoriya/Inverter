@@ -34,7 +34,9 @@
   {
    "fieldname": "technician_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Technician Name",
+   "reqd": 1,
    "unique": 1
   },
   {
@@ -120,7 +122,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-10-11 13:31:49.733850",
+ "modified": "2024-11-17 10:25:15.719750",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Technician",

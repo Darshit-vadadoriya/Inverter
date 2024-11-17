@@ -1,0 +1,152 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-11-16 19:09:10.261626",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "maintenance_visit",
+  "customer",
+  "customer_email_id",
+  "column_break_kcqe",
+  "status",
+  "date",
+  "section_break_fcbo",
+  "payments",
+  "total_payments_amount",
+  "column_break_yvkm",
+  "pending_payment_collection",
+  "total_pending_payment_amount",
+  "section_break_rmao",
+  "grand_total",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_kcqe",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Received By Field Engineer\nApproved By Admin"
+  },
+  {
+   "fieldname": "section_break_fcbo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "payments",
+   "fieldtype": "Table",
+   "label": "Payments",
+   "options": "Payments"
+  },
+  {
+   "fieldname": "total_payments_amount",
+   "fieldtype": "Float",
+   "label": "Total Payments Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_yvkm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pending_payment_collection",
+   "fieldtype": "Table",
+   "label": "Pending Payment Collection",
+   "options": "Pending Payments"
+  },
+  {
+   "fieldname": "total_pending_payment_amount",
+   "fieldtype": "Float",
+   "label": "Total Pending Payment Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_rmao",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Payment Collection",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Float",
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.email_id",
+   "fieldname": "customer_email_id",
+   "fieldtype": "Data",
+   "label": "Customer Email Id"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "PAYMENT-PC-.YYYY.-"
+  },
+  {
+   "fieldname": "maintenance_visit",
+   "fieldtype": "Link",
+   "label": "Maintenance Visit",
+   "options": "Maintenance Visit",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-11-17 16:53:15.075712",
+ "modified_by": "Administrator",
+ "module": "Inverter",
+ "name": "Payment Collection",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
