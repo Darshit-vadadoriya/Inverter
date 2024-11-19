@@ -75,12 +75,14 @@ class PaymentCollection(Document):
 				# Fetch data for each payment ID
 				for payment_id in self.pending_payment_collection:
 					try:
+						item = payment_id.item or ""
 						remarks = payment_id.remarks or ""
 						amount = payment_id.amount or 0  # Default to 0 if None
 						pending_table_rows += f"""
 							<tr style="border: 1px solid #ddd;">
-								<td style="border: 1px solid #ddd; padding: 8px;">{remarks}</td>
+								<td style="border: 1px solid #ddd; padding: 8px;">{item}</td>
 								<td style="border: 1px solid #ddd; padding: 8px;">{amount}</td>
+								<td style="border: 1px solid #ddd; padding: 8px;">{remarks}</td>
 							</tr>
 						"""
 					except frappe.DoesNotExistError:
@@ -97,8 +99,10 @@ class PaymentCollection(Document):
 											<table style="border: 1px solid #ddd; border-collapse: collapse; width: 50%; font-family: Arial, sans-serif; font-size: 14px; text-align: left; float: left;">
 												<thead style="background-color: #f2f2f2; color: #333;">
 													<tr style="border: 1px solid #ddd;">
+													    <th style="border: 1px solid #ddd; padding: 8px;">Item Code</th>
+													    <th style="border: 1px solid #ddd; padding: 8px;">Amount</th>
 														<th style="border: 1px solid #ddd; padding: 8px;">Remarks</th>
-														<th style="border: 1px solid #ddd; padding: 8px;">Amount</th>
+														
 													</tr>
 												</thead>
 												<tbody>
