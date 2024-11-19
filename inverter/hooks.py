@@ -147,6 +147,13 @@ override_doctype_class = {
 # 	}
 # }
 
+doc_events = {
+    "Sales Invoice": {
+        "on_submit": "inverter.apis.sales_invoice.create_maintenance_schedule"
+    }
+}
+
+
 # Scheduled Tasks
 # ---------------
 
@@ -247,18 +254,25 @@ override_whitelisted_methods = {
 
 fixtures = [
    
-    {
-        "dt": "Role",
-        "filters": [
-            [
-                "name",
-                "in",
-                [
-                    "Taxi Admin","Taxi Corporate"
-                ],
-            ]
-        ],
+    # {
+    #     "dt": "Role",
+    #     "filters": [
+    #         [
+    #             "name",
+    #             "in",
+    #             [
+    #                 "Taxi Admin","Taxi Corporate"
+    #             ],
+    #         ]
+    #     ],
+    # },
+     {
+        "dt": "Workflow Action Master",
     },
+    {
+        "dt": "Custom DocPerm",
+    },
+    {"dt": "Property Setter", "filters": [["module", "in", ["inverter"]]]},
     {
         "dt": "Workflow", 
         "filters": [

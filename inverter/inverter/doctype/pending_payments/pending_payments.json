@@ -6,9 +6,10 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "remarks",
+  "item",
+  "amount",
   "column_break_vgrg",
-  "amount"
+  "remarks"
  ],
  "fields": [
   {
@@ -27,12 +28,20 @@
    "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Remarks"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-17 13:19:07.921460",
+ "modified": "2024-11-18 22:13:54.121580",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Pending Payments",

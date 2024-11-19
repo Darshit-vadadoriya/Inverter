@@ -1,0 +1,44 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "format:{locality_name}",
+ "creation": "2024-11-18 22:27:58.017643",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "locality_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "locality_name",
+   "fieldtype": "Data",
+   "label": "Locality Name"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-18 22:30:35.808054",
+ "modified_by": "Administrator",
+ "module": "Inverter",
+ "name": "Locality",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
