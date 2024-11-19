@@ -56,7 +56,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Activities",
-   "link_count": 2,
+   "link_count": 3,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -80,10 +80,20 @@
    "link_type": "Report",
    "onboard": 1,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payment Collection",
+   "link_count": 0,
+   "link_to": "Payment Collection",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-10-11 18:51:38.479854",
- "modified_by": "Administrator",
+ "modified": "2024-11-19 22:42:01.748825",
+ "modified_by": "darshpatelvadadoriya@gmail.com",
  "module": "Inverter",
  "name": "Technician Work",
  "number_cards": [],
