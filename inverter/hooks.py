@@ -150,6 +150,9 @@ override_doctype_class = {
 doc_events = {
     "Sales Invoice": {
         "on_submit": "inverter.apis.sales_invoice.create_maintenance_schedule"
+    },
+    "Maintenance Schedule": {
+        "on_update_after_submit": "inverter.apis.maintenance_schedule_override.assign_schedule"
     }
 }
 
@@ -277,6 +280,12 @@ fixtures = [
         "dt": "Workflow", 
         "filters": [
             ["name", "in", ["Payment Collection"]]
+        ]
+    },
+     {
+        "dt": "Workspace", 
+        "filters": [
+            ["name", "in", ["Admin","Technician Work"]]
         ]
     }
 ]

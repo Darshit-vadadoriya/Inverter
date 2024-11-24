@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"aBDlLMIjME\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Admin</span>\",\"col\":12}},{\"id\":\"0-xMnqDXhG\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"fotJwInR29\",\"type\":\"card\",\"data\":{\"card_name\":\"Purchase\",\"col\":4}},{\"id\":\"kvu2wVw-oX\",\"type\":\"card\",\"data\":{\"card_name\":\"Inventory\",\"col\":4}},{\"id\":\"aj29h2b_Km\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales\",\"col\":4}},{\"id\":\"iTZ7Mu4ktd\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"lwjOnaMBCG\",\"type\":\"card\",\"data\":{\"card_name\":\"Maintenance\",\"col\":4}}]",
+ "content": "[{\"id\":\"aBDlLMIjME\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Admin</span>\",\"col\":12}},{\"id\":\"0-xMnqDXhG\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"fotJwInR29\",\"type\":\"card\",\"data\":{\"card_name\":\"Purchase\",\"col\":4}},{\"id\":\"kvu2wVw-oX\",\"type\":\"card\",\"data\":{\"card_name\":\"Inventory\",\"col\":4}},{\"id\":\"aj29h2b_Km\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales\",\"col\":4}},{\"id\":\"iTZ7Mu4ktd\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"lwjOnaMBCG\",\"type\":\"card\",\"data\":{\"card_name\":\"Maintenance\",\"col\":4}},{\"id\":\"otmP79AMFS\",\"type\":\"card\",\"data\":{\"card_name\":\"Maintenance Schedule Reports\",\"col\":4}}]",
  "creation": "2024-10-11 13:12:25.009457",
  "custom_blocks": [],
  "docstatus": 0,
@@ -202,45 +202,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Maintenance",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Technician",
-   "link_count": 0,
-   "link_to": "Technician",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Maintenance Schedule",
-   "link_count": 0,
-   "link_to": "Maintenance Schedule",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Maintenance Visit",
-   "link_count": 0,
-   "link_to": "Maintenance Visit",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Reports",
    "link_count": 8,
    "link_type": "DocType",
@@ -329,9 +290,107 @@
    "link_type": "Report",
    "onboard": 1,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Maintenance Schedule Reports",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Technician Wise Assign and Completed Visit",
+   "link_count": 0,
+   "link_to": "Technician Wise Assign and Completed Visit",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Area Wise Maintenance Pending Schedule",
+   "link_count": 0,
+   "link_to": "Area Wise Maintenance Pending Schedule",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Area Wise Maintenance Schedule",
+   "link_count": 0,
+   "link_to": "Area Wise Maintenance Schedule",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Maintenance Visit Done Area Wise",
+   "link_count": 0,
+   "link_to": "Maintenance Visit Done Area Wise",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Maintenance",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Technician",
+   "link_count": 0,
+   "link_to": "Technician",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Maintenance Schedule",
+   "link_count": 0,
+   "link_to": "Maintenance Schedule",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Maintenance Visit",
+   "link_count": 0,
+   "link_to": "Maintenance Visit",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payment Collection",
+   "link_count": 0,
+   "link_to": "Payment Collection",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-10-11 18:50:41.293444",
+ "modified": "2024-11-24 09:59:01.160504",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Admin",

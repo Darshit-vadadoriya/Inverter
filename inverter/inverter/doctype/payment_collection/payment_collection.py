@@ -159,3 +159,50 @@ class PaymentCollection(Document):
 			
 		except frappe.OutgoingEmailError as e:
 			frappe.log_error(message=str(e), title="Email Sending Failed")
+
+		if self.maintenance_visit:
+			frappe.db.set_value("Maintenance Visit",self.maintenance_visit,"custom_payment_done",1)
+
+
+
+	def on_cancel(self):
+		if self.maintenance_visit:
+			frappe.db.set_value("Maintenance Visit",self.maintenance_visit,"custom_payment_done",0)
+
+
+
+@frappe.whitelist()
+def get_unique_sold_items_by_customer(customer):
+    # Fetch all submitted Sales Invoices for the given customer
+    invoices = frappe.get_all('Sales Invoice', 
+                              filters={'customer': customer, 'docstatus': 1},  # docstatus=1 means submitted invoices
+                              fields=['name'])
+
+    # Extract all item codes from these invoices
+    sold_items = frappe.get_all('Sales Invoice Item', 
+                                filters={'parent': ['in', [invoice['name'] for invoice in invoices]]}, 
+                                fields=['item_code'])
+
+    # Get unique item codes
+    unique_items = list(set([item['item_code'] for item in sold_items]))
+
+    return unique_items
+
+
+
+@frappe.whitelist()
+def get_customer_outstanding(customer):
+    if not customer:
+        frappe.throw("Customer is required.")
+
+    outstanding = frappe.db.sql("""
+        SELECT 
+            SUM(outstanding_amount) AS outstanding_amount
+        FROM 
+            `tabSales Invoice`
+        WHERE 
+            docstatus = 1
+            AND customer = %(customer)s
+    """, {"customer": customer}, as_dict=True)
+
+    return outstanding[0].outstanding_amount if outstanding and outstanding[0].outstanding_amount else 0

@@ -109,7 +109,7 @@
    "name": "Maintenance Visit Purpose-custom_technician",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Technician",
+   "options": "Employee",
    "owner": "Administrator",
    "permlevel": 0,
    "placeholder": null,

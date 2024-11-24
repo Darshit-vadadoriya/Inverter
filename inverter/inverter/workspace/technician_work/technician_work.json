@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"n8ppOMIqBa\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Technician Work</span>\",\"col\":12}},{\"id\":\"G3bg0HpNOw\",\"type\":\"card\",\"data\":{\"card_name\":\"Maintanance\",\"col\":4}},{\"id\":\"zGhUCqGu4o\",\"type\":\"card\",\"data\":{\"card_name\":\"Activities\",\"col\":4}}]",
+ "content": "[{\"id\":\"n8ppOMIqBa\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Technician Work</span>\",\"col\":12}},{\"id\":\"G3bg0HpNOw\",\"type\":\"card\",\"data\":{\"card_name\":\"Maintanance\",\"col\":4}},{\"id\":\"zGhUCqGu4o\",\"type\":\"card\",\"data\":{\"card_name\":\"Activities\",\"col\":4}},{\"id\":\"HUM3NcA_Cm\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2024-10-11 14:08:45.939114",
  "custom_blocks": [],
  "docstatus": 0,
@@ -90,10 +90,30 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Technician Wise Assign and Completed Visit",
+   "link_count": 0,
+   "link_to": "Technician Wise Assign and Completed Visit",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Maintenance Schedule",
+   "type": "Link"
   }
  ],
- "modified": "2024-11-19 22:42:01.748825",
- "modified_by": "darshpatelvadadoriya@gmail.com",
+ "modified": "2024-11-24 09:49:37.244867",
+ "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Technician Work",
  "number_cards": [],
