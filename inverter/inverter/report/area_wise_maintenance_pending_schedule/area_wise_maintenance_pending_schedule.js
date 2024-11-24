@@ -1,58 +1,49 @@
 // Copyright (c) 2024, Sahil Patel and contributors
 // For license information, please see license.txt
-frappe.query_reports["Area Wise Maintenance Schedule"] = {
-    filters: [
+
+frappe.query_reports["Area Wise Maintenance Pending Schedule"] = {
+    "filters": [
         {
             "fieldname": "company",
-            "label": __("Company"),
+            "label": "Company",
             "fieldtype": "Link",
             "options": "Company",
-            "default": frappe.defaults.get_default("company"),
+            "default": frappe.defaults.get_default("company")
         },
         {
             "fieldname": "customer",
-            "label": __("Customer"),
+            "label": "Customer",
             "fieldtype": "Link",
-            "options": "Customer",
+            "options": "Customer"
+        },
+        {
+            "fieldname": "custom_locality",
+            "label": "Locality",
+            "fieldtype": "Link",
+            "options": "Locality"
+        },
+        {
+            "fieldname": "from_date",
+            "label": "From Date",
+            "fieldtype": "Date",
+            "default": get_date_30_days_ago() // Dynamically set the from_date as 30 days ago
+        },
+        {
+            "fieldname": "to_date",
+            "label": "To Date",
+            "fieldtype": "Date",
+            "default": get_today_date() // Dynamically set the to_date as today
         },
         {
             "fieldname": "financial_year",
-            "label": __("Financial Year"),
+            "label": "Financial Year",
             "fieldtype": "Link",
-            "options": "Fiscal Year",
-            "default": "", // Default is initially empty, will be set dynamically
-        },
-        {
-            "fieldname": "locality",
-            "label": __("Locality"),
-            "fieldtype": "Link",
-            "options": "Locality",
-        },
+            "options": "Fiscal Year"
+        }
     ],
 
     onload: function(report) {
-        // Set the default company dynamically
-        frappe.call({
-            method: "frappe.client.get_list",
-            args: {
-                doctype: "Company",
-                fields: ["name"],
-                limit_page_length: 1
-            },
-            callback: function(response) {
-                if (response.message && response.message.length > 0) {
-                    report.fields_dict.company.get_query = function() {
-                        return {
-                            filters: {
-                                name: response.message[0].name
-                            }
-                        };
-                    };
-                    report.filter_fields_dict['company'].$input.val(response.message[0].name);
-                }
-            }
-        });
-
+       
         // Set the default financial year dynamically
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear();
@@ -89,4 +80,18 @@ frappe.query_reports["Area Wise Maintenance Schedule"] = {
             }
         });
     }
+
 };
+
+// Function to get the date 30 days ago
+function get_date_30_days_ago() {
+    var date = new Date();
+    date.setDate(date.getDate() - 30); // Subtract 30 days from today
+    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+}
+
+// Function to get today's date
+function get_today_date() {
+    var date = new Date();
+    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+}

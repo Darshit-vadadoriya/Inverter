@@ -1,29 +1,29 @@
 {
- "add_total_row": 0,
+ "add_total_row": 1,
  "columns": [],
- "creation": "2024-11-17 10:11:41.141076",
+ "creation": "2024-11-20 22:42:03.482949",
  "disabled": 0,
  "docstatus": 0,
  "doctype": "Report",
  "filters": [],
- "idx": 12,
+ "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2024-11-24 10:34:45.132016",
+ "modified": "2024-11-21 23:22:12.868793",
  "modified_by": "Administrator",
  "module": "Inverter",
- "name": "Technician Wise Assign and Completed Visit",
+ "name": "Maintenance Visit Done Area Wise",
  "owner": "Administrator",
  "prepared_report": 0,
  "ref_doctype": "Maintenance Schedule",
- "report_name": "Technician Wise Assign and Completed Visit",
+ "report_name": "Maintenance Visit Done Area Wise",
  "report_type": "Script Report",
  "roles": [
   {
-   "role": "Technician"
+   "role": "Maintenance Manager"
   },
   {
-   "role": "Employee"
+   "role": "Admin"
   }
  ],
  "timeout": 0
