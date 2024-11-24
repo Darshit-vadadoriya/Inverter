@@ -102,17 +102,16 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Technician Wise Assign and Completed Visit",
    "link_count": 0,
    "link_to": "Technician Wise Assign and Completed Visit",
    "link_type": "Report",
    "onboard": 0,
-   "report_ref_doctype": "Maintenance Schedule",
    "type": "Link"
   }
  ],
- "modified": "2024-11-24 09:49:37.244867",
+ "modified": "2024-11-24 10:27:36.511485",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Technician Work",

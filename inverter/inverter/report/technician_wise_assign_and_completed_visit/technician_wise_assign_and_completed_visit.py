@@ -36,7 +36,7 @@ def execute(filters=None):
         INNER JOIN 
             `tabMaintenance Schedule` ms ON ms.name = msd.parent
         WHERE 
-            1 = 1
+            ms.docstatus = 1
     """
     
     conditions = []
