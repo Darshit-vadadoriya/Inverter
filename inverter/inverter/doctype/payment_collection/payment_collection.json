@@ -15,8 +15,8 @@
   "status",
   "date",
   "mode_of_payment",
+  "upload_image",
   "payment_completion_proof",
-  "image_yahs",
   "section_break_fcbo",
   "payments",
   "total_payments_amount",
@@ -25,6 +25,7 @@
   "total_pending_payment_amount",
   "section_break_rmao",
   "grand_total",
+  "image_yahs",
   "amended_from"
  ],
  "fields": [
@@ -133,6 +134,7 @@
    "options": "Mode of Payment"
   },
   {
+   "depends_on": "eval:doc.payment_completion_proof != \"\"",
    "fieldname": "payment_completion_proof",
    "fieldtype": "Attach Image",
    "label": "Payment Completion Proof"
@@ -147,12 +149,19 @@
    "fieldtype": "Currency",
    "label": "Outstanding Amount",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.payment_completion_proof == \"\"",
+   "description": "Payment proof image upload here",
+   "fieldname": "upload_image",
+   "fieldtype": "Button",
+   "label": "Upload Image"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-23 15:46:17.086027",
+ "modified": "2024-11-26 01:03:12.098475",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Payment Collection",

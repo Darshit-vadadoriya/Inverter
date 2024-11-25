@@ -9,38 +9,130 @@ frappe.ui.form.on("Payment Collection", {
         set_selled_item_filter(frm)
 
 
+        // frm.add_custom_button(__('Open Camera'), function() {
+        //     // Create an invisible file input element
+        //     var input = document.createElement('input');
+        //     input.type = 'file';
+        //     input.accept = 'image/*';
+        //     input.capture = 'camera'; // This will trigger the camera dialog
 
-        // Attach a custom click handler to the "payment_completion_proof" field
-        frm.fields_dict['payment_completion_proof'].df.on_click = function () {
-            // Open file uploader with camera directly
-            frappe.ui.FileUploader.show({
-                doctype: frm.doc.doctype,
-                docname: frm.doc.name,
-                fieldname: 'payment_completion_proof',
-                options: {
-                    accept: 'image/*', // Only allow images
-                    capture: 'camera', // Open camera directly
-                },
-                callback: function (file) {
-                    if (file && file.file_url) {
-                        // Set the uploaded file's URL in the field
-                        frm.set_value('payment_completion_proof', file.file_url);
-                        frm.refresh_field('payment_completion_proof');
-                        frappe.msgprint(__('Image uploaded successfully.'));
-                    } else {
-                        frappe.msgprint(__('Failed to upload the image.'));
-                    }
-                }
-            });
-        };
+        //     // Listen for the file selection event (image capture)
+        //     input.onchange = function(event) {
+        //         var file = event.target.files[0];  // Get the captured image file
+                
+        //         if (file) {
+        //             var reader = new FileReader();
+                    
+        //             reader.onloadend = function() {
+        //                 // The image data URL from the file reader
+        //                 var imageData = reader.result;
 
-        // Refresh the field to apply changes
-        frm.refresh_field('payment_completion_proof');
-    
+        //                 // Set the image in the form's image field
+        //                 frm.set_value('payment_completion_proof', imageData);
+        //                 frm.refresh_field('payment_completion_proof');
+        //             };
+
+        //             // Read the file as a data URL (base64 encoded image)
+        //             reader.readAsDataURL(file);
+        //         }
+        //     };
+
+        //     // Trigger the file input dialog to open the camera
+        //     input.click();
+        // });
 
 
+        // frm.add_custom_button(__('Capture and Upload Image'), function () {
+        //     // Create an input element for capturing an image
+        //     const input = document.createElement('input');
+        //     input.type = 'file';
+        //     input.accept = 'image/*';
+        //     input.capture = 'environment'; // Prefer rear-facing camera
+        
+        //     input.onchange = function (event) {
+        //         const file = event.target.files[0];
+        //         if (file) {
+        //             const formData = new FormData();
+        //             formData.append('file', file);
+        
+        //             // Show loader during upload
+        //             frappe.show_alert({ message: __('Uploading image...'), indicator: 'orange' });
+        
+        //             // Upload the image using fetch API
+        //             fetch('/api/method/inverter.inverter.doctype.payment_collection.payment_collection.upload_image', {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'X-Frappe-CSRF-Token': frappe.csrf_token
+        //                 },
+        //                 body: formData
+        //             })
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 if (data.message?.file_url) {
+        //                     frm.set_value('payment_completion_proof', data.message.file_url);
+        //                     frm.refresh_field('payment_completion_proof');
+        //                     frm.save();
+        //                 } else {
+        //                     frappe.msgprint(__('Image upload failed.'));
+        //                 }
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error:', error);
+        //                 frappe.msgprint(__('Failed to upload the image.'));
+        //             });
+        //         }
+        //     };
+        
+        //     // Open camera or file selector
+        //     input.click();
+        // });
+        
 
 	},
+    upload_image(frm){
+          // Create an input element for capturing an image
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.capture = 'environment'; // Prefer rear-facing camera
+      
+          input.onchange = function (event) {
+              const file = event.target.files[0];
+              if (file) {
+                  const formData = new FormData();
+                  formData.append('file', file);
+      
+                  // Show loader during upload
+                  frappe.show_alert({ message: __('Uploading image...'), indicator: 'orange' });
+      
+                  // Upload the image using fetch API
+                  fetch('/api/method/inverter.inverter.doctype.payment_collection.payment_collection.upload_image', {
+                      method: 'POST',
+                      headers: {
+                          'X-Frappe-CSRF-Token': frappe.csrf_token
+                      },
+                      body: formData
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.message?.file_url) {
+                          frm.set_value('payment_completion_proof', data.message.file_url);
+                          frm.refresh_field('payment_completion_proof');
+                          frm.save();
+                      } else {
+                          frappe.msgprint(__('Image upload failed.'));
+                      }
+                  })
+                  .catch(error => {
+                      console.error('Error:', error);
+                      frappe.msgprint(__('Failed to upload the image.'));
+                  });
+              }
+          };
+      
+          // Open camera or file selector
+          input.click();
+    },
     customer:function(frm){
         set_selled_item_filter(frm)
 
@@ -167,3 +259,6 @@ function get_outstanding(frm){
         }
     });
 }
+
+
+
