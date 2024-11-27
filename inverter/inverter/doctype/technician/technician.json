@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:technician_name",
- "creation": "2024-10-11 13:22:28.353937",
+ "creation": "2024-11-27 22:54:11.494918",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -40,6 +40,10 @@
    "unique": 1
   },
   {
+   "fieldname": "column_break_5wq6",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "specilization",
    "fieldtype": "Data",
    "label": "Specilization"
@@ -54,6 +58,10 @@
    "fieldtype": "Select",
    "label": "Gender",
    "options": "Male\nFemale"
+  },
+  {
+   "fieldname": "column_break_svhf",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "certified",
@@ -77,6 +85,10 @@
    "label": "Address"
   },
   {
+   "fieldname": "column_break_taca",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "city",
    "fieldtype": "Data",
    "label": "City"
@@ -98,31 +110,19 @@
    "options": "Phone"
   },
   {
+   "fieldname": "column_break_aali",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "email",
    "fieldtype": "Data",
    "label": "Email",
    "options": "Email"
-  },
-  {
-   "fieldname": "column_break_5wq6",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_svhf",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_taca",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_aali",
-   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-17 10:25:15.719750",
+ "modified": "2024-11-27 22:54:11.494918",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Technician",

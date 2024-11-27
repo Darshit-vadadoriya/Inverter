@@ -354,7 +354,7 @@
    "is_query_report": 0,
    "label": "Technician",
    "link_count": 0,
-   "link_to": "Technician",
+   "link_to": "Employee",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -390,7 +390,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-11-24 09:59:01.160504",
+ "modified": "2024-11-27 22:54:32.915615",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Admin",
