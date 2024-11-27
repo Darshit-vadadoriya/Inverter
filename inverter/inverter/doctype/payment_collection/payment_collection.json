@@ -134,7 +134,7 @@
    "options": "Mode of Payment"
   },
   {
-   "depends_on": "eval:doc.payment_completion_proof != \"\"",
+   "depends_on": "eval:doc.payment_completion_proof",
    "fieldname": "payment_completion_proof",
    "fieldtype": "Attach Image",
    "label": "Payment Completion Proof"
@@ -151,7 +151,7 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.payment_completion_proof == \"\"",
+   "depends_on": "eval:doc.payment_completion_proof == \"\" || doc.payment_completion_proof == undefined",
    "description": "Payment proof image upload here",
    "fieldname": "upload_image",
    "fieldtype": "Button",
@@ -161,7 +161,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-26 01:03:12.098475",
+ "modified": "2024-11-28 01:39:06.405704",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Payment Collection",
