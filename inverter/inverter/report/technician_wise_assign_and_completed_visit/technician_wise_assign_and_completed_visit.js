@@ -22,7 +22,7 @@ frappe.query_reports["Technician Wise Assign and Completed Visit"] = {
             "fieldtype": "Link",
             "options": "Employee",
             "get_query": function() {
-                if (frappe.user_roles.includes("Technician")) {
+                if (frappe.user_roles.includes("Technician") && !frappe.user_roles.includes("Admin")) {
                     return {
                         filters: {
                             user_id: frappe.session.user // Filter by the current session's user
@@ -43,7 +43,26 @@ frappe.query_reports["Technician Wise Assign and Completed Visit"] = {
             "fieldtype": "Date",
             "default": get_today_date()
         },
-    ]
+    ],
+    onload: function (report) {
+        // Fetch the Employee linked to the current session user
+        frappe.call({
+            method: "frappe.client.get_value",
+            args: {
+                doctype: "Employee",
+                fieldname: "name",
+                filters: {
+                    user_id: frappe.session.user
+                }
+            },
+            callback: function (response) {
+                if (response.message) {
+                    // Set the "technician" filter value to the fetched Employee name
+                    frappe.query_report.set_filter_value("technician", response.message.name);
+                }
+            }
+        });
+    },
 };
 
 // Helper function to get the date 30 days ago
