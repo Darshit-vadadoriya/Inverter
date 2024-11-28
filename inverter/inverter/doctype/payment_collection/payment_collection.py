@@ -8,7 +8,7 @@ from frappe.model.document import Document
 
 class PaymentCollection(Document):
 
-	def on_submit(self):
+	def on_save(self):
 		email_ids = frappe.db.sql("select email_id from `tabEmail Recipients` where parent='Support Setup'",as_dict=1)
 		email_list = [item['email_id'] for item in email_ids]
 		payment_date = frappe.utils.formatdate(self.date, "dd-MM-yyyy")
@@ -213,8 +213,6 @@ def get_customer_outstanding(customer):
 @frappe.whitelist()
 def upload_image():
 	uploaded_file = frappe.request.files['file']
-	print(uploaded_file)
-	print("\n\n\n\n\n\n\n\n\n\n\n")
 	file_name = uploaded_file.filename
 	file_content = uploaded_file.read()
 	file_doc = save_file(file_name, file_content, None, None, is_private=False)
