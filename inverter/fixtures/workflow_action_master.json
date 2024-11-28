@@ -23,16 +23,16 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2024-11-17 12:26:49.204288",
-  "name": "Approved By Admin",
-  "workflow_action_name": "Approved By Admin"
+  "modified": "2024-11-10 19:11:19.675009",
+  "name": "Approve",
+  "workflow_action_name": "Approve"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2024-11-10 19:11:19.675009",
-  "name": "Approve",
-  "workflow_action_name": "Approve"
+  "modified": "2024-11-17 12:26:49.204288",
+  "name": "Approved By Admin",
+  "workflow_action_name": "Approved By Admin"
  },
  {
   "docstatus": 0,

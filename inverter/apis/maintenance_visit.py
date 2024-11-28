@@ -82,4 +82,98 @@ def get_serial_no(customer):
     return list(result_set)
 
 
+# get linked employee wise maintenance visit records
+@frappe.whitelist()
+def get_maintenance_visits_for_technician(employee):
+    # Fetch Maintenance Visits where Purpose child table links to the Technician's employee
+    visits = frappe.db.sql("""
+        SELECT DISTINCT parent
+        FROM `tabMaintenance Visit Purpose`
+        WHERE custom_technician = %s
+    """, (employee,), as_dict=False)
 
+    return [visit[0] for visit in visits]
+
+
+
+import frappe
+
+@frappe.whitelist()
+def get_technician_roles(user):
+    """
+    Check if the user has the 'Technician' role and fetch associated details from Maintenance Schedule Detail.
+    """
+    # Fetch roles of the current user
+    roles = frappe.get_roles(user)
+
+    # Check if the user has the 'Technician' role but not 'Admin' or 'System Manager'
+    if "Technician" in roles and "Administrator" not in roles and "System Manager" not in roles:
+        
+        # Fetch the employee linked to the current user
+        employee = frappe.db.get_value('Employee', {'user_id': user}, 'name')
+        
+        if employee:
+            # If employee exists, fetch Maintenance Schedule Details for that employee
+            details = frappe.db.get_all(
+                'Maintenance Schedule Detail',
+                filters={'custom_technician': employee},  # Assuming 'employee' field is in Maintenance Schedule Detail
+                fields=["*"]
+            )
+            return details
+        else:
+            return []  # If no employee linked to user, return empty list
+    else:
+        # Return an empty list if the user is not a Technician or is an Admin/System Manager
+        return []
+
+
+
+
+@frappe.whitelist()
+def get_pending_maintenance_schedules():
+    # Get the current user's employee
+    employee = frappe.session.user
+    employee_doc = frappe.get_doc("Employee",{"user_id":employee})
+
+    # Query for maintenance schedule details where the technician is the current user and the completion status is "Pending"
+    schedules = frappe.get_all('Maintenance Schedule Detail', filters={
+        'custom_technician': employee_doc.name,
+        'completion_status': 'Pending'
+    }, fields=['name', 'scheduled_date'])
+
+    # Return the schedules in a format suitable for the select options
+    return schedules
+
+
+
+import frappe
+
+@frappe.whitelist()
+def get_maintenance_schedule_details(schedule_name):
+    # Fetch the details of the Maintenance Schedule Detail based on schedule_name (ID)
+    schedule_detail = frappe.db.get_value(
+        'Maintenance Schedule Detail', 
+        schedule_name, 
+        ['*'],  # Fields to fetch
+        as_dict=True
+    )
+    
+    # Check if schedule detail is found
+    if schedule_detail:
+        # Fetch the related Maintenance Schedule (parent) document
+        maintenance_schedule = frappe.db.get_value(
+            'Maintenance Schedule', 
+            schedule_detail.parent,  # Use the parent field to get the related schedule
+            ['*'],  # Add any relevant fields
+            as_dict=True
+        )
+        
+        # Combine both schedule detail and maintenance schedule data
+        combined_data = {
+            'schedule_detail': schedule_detail,
+            'maintenance_schedule': maintenance_schedule
+        }
+        
+        return combined_data
+    else:
+        return None
