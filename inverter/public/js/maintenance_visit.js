@@ -37,8 +37,13 @@ frappe.ui.form.on('Maintenance Visit', {
             !frappe.user_roles.includes("Administrator") &&
             !frappe.user_roles.includes("System Manager")
         ) {
+            
             // Call the functions only for "Technician" role
-            get_schedules(frm);
+            console.log(cur_frm.doc.docstatus !=1 && cur_frm.doc.docstatus!=2);
+            if(cur_frm.doc.docstatus !=1 && cur_frm.doc.docstatus!=2)
+               {
+                get_schedules(frm);
+               } 
         }
 
 
