@@ -2,7 +2,6 @@ import frappe
 from frappe.utils import today, add_months
 
 def create_maintenance_schedule(doc, method):
-    # frappe.db.get_value("Customer",doc.customer,"custom_locality",as_dict=True)
     for item in doc.items:
         item_details = frappe.db.get_value(
             "Item", 
@@ -15,7 +14,6 @@ def create_maintenance_schedule(doc, method):
         if item_details:
             maintenance_schedule = frappe.new_doc("Maintenance Schedule")
             maintenance_schedule.customer = doc.customer
-            # maintenance_schedule.custom_locality = item_details.get("custom_locality")
             maintenance_schedule.sales_invoice = doc.name
             maintenance_schedule.transaction_date = today()
             
@@ -23,6 +21,7 @@ def create_maintenance_schedule(doc, method):
                 "item_code": item.item_code,
                 "serial_no": item.serial_no,
                 "qty": item.qty,
+                "custom_technician":"", 
                 "start_date": today(),
                 "no_of_visits": item_details.get("custom_no_of_visits", 1),
                 "periodicity": item_details.get("custom_periodicity", "Monthly"),

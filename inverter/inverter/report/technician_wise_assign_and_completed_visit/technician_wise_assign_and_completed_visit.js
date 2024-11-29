@@ -62,6 +62,8 @@ frappe.query_reports["Technician Wise Assign and Completed Visit"] = {
                 }
             }
         });
+
+        
     },
 };
 

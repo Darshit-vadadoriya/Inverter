@@ -296,7 +296,7 @@
   "doctype": "Custom DocPerm",
   "email": 0,
   "export": 1,
-  "if_owner": 0,
+  "if_owner": 1,
   "import": 0,
   "modified": "2024-11-27 22:27:45.340455",
   "name": "m1om0l895k",
