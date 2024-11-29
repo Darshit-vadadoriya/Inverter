@@ -75,7 +75,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Maintanance",
-   "link_count": 3,
+   "link_count": 2,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -93,16 +93,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Maintenance Schedule",
-   "link_count": 0,
-   "link_to": "Maintenance Schedule",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Maintenance Visit",
    "link_count": 0,
    "link_to": "Maintenance Visit",
@@ -111,7 +101,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-11-27 22:54:55.294504",
+ "modified": "2024-11-29 22:03:17.325102",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Technician Work",

@@ -1,5 +1,5 @@
 frappe.ui.form.on('Maintenance Visit', {
-    
+
     setup: function (frm) {
         const current_user = frappe.session.user;
 
@@ -11,10 +11,10 @@ frappe.ui.form.on('Maintenance Visit', {
             },
             callback: function (response) {
                 console.log(response);
-                if (response.message.length > 0 && 
-                    !frappe.user_roles.includes("System Manager") && 
+                if (response.message.length > 0 &&
+                    !frappe.user_roles.includes("System Manager") &&
                     frappe.user != "Administrator") {
-                    
+
                     // Set dynamic filter for the maintenance_schedule_detail field
                     frm.set_query('maintenance_schedule_detail', function () {
                         return {
@@ -24,42 +24,52 @@ frappe.ui.form.on('Maintenance Visit', {
                             }
                         };
                     });
-                } 
-                
+                }
+
             }
         });
     },
-    refresh:function(frm){
-       set_serialno_filter(frm) 
-        get_schedules(frm)
-    
+    refresh: function (frm) {
+        set_serialno_filter(frm)
+        // Check if the user is a Technician but not an Admin or System Manager
+        if (
+            frappe.user_roles.includes("Technician") &&
+            !frappe.user_roles.includes("Administrator") &&
+            !frappe.user_roles.includes("System Manager")
+        ) {
+            // Call the functions only for "Technician" role
+            get_schedules(frm);
+        }
+
+
+
     },
     customer: function (frm) {
-       set_serialno_filter(frm)
+        set_serialno_filter(frm)
     }
 });
 
-function set_serialno_filter(frm){
-     if (frm.doc.customer) {
-            frappe.call({
-                method: 'inverter.apis.maintenance_visit.get_serial_no',
-                args: {
-                    customer: frm.doc.customer
-                },
-                callback: function (r) {
-                    if (r.message) {
-                        frm.fields_dict["purposes"].grid.get_field("serial_no").get_query = function () {
-                            return {
-                                filters: [
-                                    ["Serial No", "name", "in", r.message]
-                                ]
-                            };
+function set_serialno_filter(frm) {
+    if (frm.doc.customer) {
+        frappe.call({
+            method: 'inverter.apis.maintenance_visit.get_serial_no',
+            args: {
+                customer: frm.doc.customer
+            },
+            callback: function (r) {
+                if (r.message) {
+                    frm.fields_dict["purposes"].grid.get_field("serial_no").get_query = function () {
+                        return {
+                            filters: [
+                                ["Serial No", "name", "in", r.message]
+                            ]
                         };
-        
-                    }
+                    };
+
                 }
-            });
-        }
+            }
+        });
+    }
 }
 
 
@@ -96,7 +106,7 @@ function set_serialno_filter(frm){
 //                             d.hide();
 //                         }
 //                     });
-    
+
 //                     // Show the dialog
 //                     d.show();
 //                 }
@@ -108,11 +118,11 @@ function set_serialno_filter(frm){
 
 
 function get_schedules(frm) {
-    frm.add_custom_button(__('Select Maintenance Schedules'), function() {
+    frm.add_custom_button(__('Select Maintenance Schedules'), function () {
         // Call the server-side function to fetch the pending schedules
         frappe.call({
             method: "inverter.apis.maintenance_visit.get_pending_maintenance_schedules",  // Replace with the correct path
-            callback: function(r) {
+            callback: function (r) {
                 if (r.message) {
                     console.log(r.message);
                     // Create an array of options for the Select field
@@ -145,32 +155,32 @@ function get_schedules(frm) {
                                 args: {
                                     schedule_name: values.schedule  // The selected schedule name (ID)
                                 },
-                                callback: function(r) {
+                                callback: function (r) {
                                     if (r.message) {
                                         // Log the combined data (schedule details + parent schedule details)
                                         console.log('Combined Data:', r.message);
-                                        
+
                                         // Access schedule details
                                         const scheduleDetail = r.message.schedule_detail;
-                            
+
                                         // Access parent maintenance schedule details
                                         const maintenanceSchedule = r.message.maintenance_schedule;
-                            
+
                                         // Set the 'maintenance_schedule' field with the 'name' from the maintenance_schedule
                                         frm.set_value('maintenance_schedule', maintenanceSchedule.name);
-                                        
+
                                         // Set the 'customer' field with the 'customer' from the maintenance_schedule
                                         frm.set_value('customer', maintenanceSchedule.customer);
-                                        frm.add_child("purposes",{
-                                            item_code:scheduleDetail.item_code,
-                                            item_name:scheduleDetail.item_name,
-                                            custom_technician:scheduleDetail.custom_technician,
-                                            prevdoc_doctype:"Maintenance Schedule Detail",
-                                            prevdoc_docname:scheduleDetail.name,
-                                            maintenance_schedule_detail:scheduleDetail.name
+                                        frm.add_child("purposes", {
+                                            item_code: scheduleDetail.item_code,
+                                            item_name: scheduleDetail.item_name,
+                                            custom_technician: scheduleDetail.custom_technician,
+                                            prevdoc_doctype: "Maintenance Schedule Detail",
+                                            prevdoc_docname: scheduleDetail.name,
+                                            maintenance_schedule_detail: scheduleDetail.name
                                         })
                                         frm.refresh_field("purposes")
-                            
+
                                         // Optionally, you can log the values to check
                                         console.log('Maintenance Schedule Name:', maintenanceSchedule.name);
                                         console.log('Customer:', maintenanceSchedule.customer);

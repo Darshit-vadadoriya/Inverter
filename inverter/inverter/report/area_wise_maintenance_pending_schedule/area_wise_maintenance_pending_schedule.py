@@ -32,7 +32,6 @@ def get_data(filters):
     """
     Fetches the data for the report based on the filters provided.
     """
-    frappe.log_error(filters, "Debug Filters in Area Wise Maintenance Pending Schedule")
 
     # Build query with conditions
     conditions = get_conditions(filters)
@@ -61,7 +60,6 @@ def get_data(filters):
     """
 
     # Log the final query for debugging
-    frappe.log_error(f"Final SQL Query: {query}", "Debug SQL Query")
     
     # Execute the query and fetch data
     try:
@@ -75,7 +73,6 @@ def get_data(filters):
         return result
 
     except Exception as e:
-        frappe.log_error(f"Error fetching data: {str(e)}", "Report Error")
         return []
 
 def get_conditions(filters):
@@ -115,7 +112,6 @@ def get_conditions(filters):
                 filters["fy_start_date"] = fy_start_date
                 filters["fy_end_date"] = fy_end_date
             except ValueError:
-                frappe.log_error(f"Invalid financial year format: {filters['financial_year']}", "Report Error")
                 raise ValueError("Invalid financial year")
         else:
             raise ValueError("Invalid financial year format. Expected format: YYYY-YYYY")

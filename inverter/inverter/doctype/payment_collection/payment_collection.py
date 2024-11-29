@@ -8,7 +8,7 @@ from frappe.model.document import Document
 
 class PaymentCollection(Document):
 
-	def on_save(self):
+	def on_update(self):
 		email_ids = frappe.db.sql("select email_id from `tabEmail Recipients` where parent='Support Setup'",as_dict=1)
 		email_list = [item['email_id'] for item in email_ids]
 		payment_date = frappe.utils.formatdate(self.date, "dd-MM-yyyy")
