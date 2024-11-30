@@ -145,7 +145,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Maintenance Schedule Detail",
-   "fetch_from": "custom_technician.personal_email",
+   "fetch_from": "custom_technician.prefered_email",
    "fetch_if_empty": 0,
    "fieldname": "custom_technician_email",
    "fieldtype": "Data",
