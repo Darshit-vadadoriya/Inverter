@@ -119,7 +119,7 @@ class PaymentCollection(Document):
 
 
 
-	# 	admin_message = f"""Dear Sir/Madam,<br><br>
+	# 	admin_message = f"""Dear Sir/Medam,<br><br>
 
 	# 					This is to inform you that the payment has been successfully processed.<br><br>
 
@@ -165,9 +165,193 @@ class PaymentCollection(Document):
 	# 		frappe.db.set_value("Maintenance Visit",self.maintenance_visit,"custom_payment_done",1)
 
 
+# ====================================================SEND MAIL
+	# def on_update(self):
+	# 	# Fetch email recipients from the 'Support Setup' table
+	# 	email_ids = frappe.db.sql(
+	# 		"SELECT email_id FROM `tabEmail Recipients` WHERE parent='Support Setup'", as_dict=1
+	# 	)
+	# 	email_list = [item["email_id"] for item in email_ids]
+
+	# 	# Format the payment date
+	# 	payment_date = frappe.utils.formatdate(self.date, "dd-MM-yyyy")
+
+	# 	# **Customer Email Template**
+	# 	customer_message = f"""
+	# 		<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.8; max-width: 700px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+	# 			<div style="background-color: #007bff; color: white; padding: 15px; text-align: center; border-radius: 8px 8px 0 0;">
+	# 				<h2 style="margin: 0;">Payment Confirmation</h2>
+	# 			</div>
+	# 			<p style="margin-top: 20px;">Dear {self.customer},</p>
+	# 			<p>We are pleased to inform you that your payment has been successfully processed. Below are the details:</p>
+	# 			<div style="background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+	# 				<h3 style="color: #007bff; margin-top: 0; text-align: center;">Transaction Summary</h3>
+	# 				<table style="border-collapse: collapse; width: 100%; margin: auto;">
+	# 					<tbody>
+	# 						<tr style="background-color: #f2f2f2;">
+	# 							<td style="padding: 10px; border: 1px solid #ddd;"><strong>Transaction ID:</strong></td>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;">{self.name}</td>
+	# 						</tr>
+	# 						<tr>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;"><strong>Payment Date:</strong></td>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;">{payment_date}</td>
+	# 						</tr>
+	# 						<tr style="background-color: #f2f2f2;">
+	# 							<td style="padding: 10px; border: 1px solid #ddd;"><strong>Total Amount:</strong></td>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;">{self.grand_total}</td>
+	# 						</tr>
+	# 					</tbody>
+	# 				</table>
+	# 			</div>
+	# 	"""
+
+	# 	# Payment table rows
+	# 	payment_rows = ""
+	# 	if self.payments:
+	# 		for payment in self.payments:
+	# 			payment_rows += f"""
+	# 				<tr>
+	# 					<td style="padding: 10px; border: 1px solid #ddd;">{payment.item_code or "-"}</td>
+	# 					<td style="padding: 10px; border: 1px solid #ddd;">{payment.quantity or 0}</td>
+	# 					<td style="padding: 10px; border: 1px solid #ddd;">{payment.amount or 0}</td>
+	# 					<td style="padding: 10px; border: 1px solid #ddd;">{payment.remarks or ""}</td>
+	# 				</tr>
+	# 			"""
+
+	# 		if payment_rows:
+	# 			payment_table = f"""
+	# 				<h3 style="margin-top: 20px; color: #007bff; text-align: center;">Payment Details</h3>
+	# 				<table style="border-collapse: collapse; width: 100%; margin: auto; background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px;">
+	# 					<thead>
+	# 						<tr style="background-color: #007bff; color: white;">
+	# 							<th style="padding: 10px; border: 1px solid #ddd;">Item Code</th>
+	# 							<th style="padding: 10px; border: 1px solid #ddd;">Quantity</th>
+	# 							<th style="padding: 10px; border: 1px solid #ddd;">Amount</th>
+	# 							<th style="padding: 10px; border: 1px solid #ddd;">Remarks</th>
+	# 						</tr>
+	# 					</thead>
+	# 					<tbody>{payment_rows}</tbody>
+	# 				</table>
+	# 			"""
+	# 			customer_message += payment_table
+
+	# 	# Pending payments table
+	# 	pending_rows = ""
+	# 	if self.pending_payment_collection:
+	# 		for pending in self.pending_payment_collection:
+	# 			pending_rows += f"""
+	# 				<tr>
+	# 					<td style="padding: 10px; border: 1px solid #ddd;">{pending.amount or 0}</td>
+	# 					<td style="padding: 10px; border: 1px solid #ddd;">{pending.remarks or ""}</td>
+	# 				</tr>
+	# 			"""
+
+	# 		if pending_rows:
+	# 			pending_table = f"""
+	# 				<h3 style="margin-top: 20px; color: #e74c3c; text-align: center;">Pending Payments</h3>
+	# 				<table style="border-collapse: collapse; width: 100%; margin: auto; background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px;">
+	# 					<thead>
+	# 						<tr style="background-color: #e74c3c; color: white;">
+	# 							<th style="padding: 10px; border: 1px solid #ddd;">Amount</th>
+	# 							<th style="padding: 10px; border: 1px solid #ddd;">Remarks</th>
+	# 						</tr>
+	# 					</thead>
+	# 					<tbody>{pending_rows}</tbody>
+	# 				</table>
+	# 			"""
+	# 			customer_message += pending_table
+
+	# 	# Closing message body
+	# 	customer_message += """
+	# 		<p style="margin-top: 20px;">Thank you for your business!</p>
+	# 		<div style="text-align: center; padding: 10px; font-size: 14px; color: #777; border-top: 1px solid #ddd;">
+	# 			<p style="margin: 0;">This is an automated email. Please do not reply.</p>
+	# 		</div>
+	# 	</div>
+	# 	"""
+
+	# 	# **Admin Email Template**
+	# 	admin_message = f"""
+	# 		<div style="font-family: Arial, sans-serif; font-size: 16px; color: #333; line-height: 1.8; max-width: 700px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+	# 			<div style="background-color: #007bff; color: white; padding: 15px; text-align: center; border-radius: 8px 8px 0 0;">
+	# 				<h2 style="margin: 0;">Payment Collection</h2>
+	# 			</div>
+	# 			<p style="margin-top: 20px;">Dear Sir/Medam,</p>
+	# 			<p>This is to inform you that the payment has been successfully processed. Below are the details:</p>
+	# 			<div style="background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+	# 				<h3 style="color: #007bff; margin-top: 0; text-align: center;">Transaction Summary</h3>
+	# 				<table style="border-collapse: collapse; width: 100%; margin: auto;">
+	# 					<tbody>
+	# 						<tr style="background-color: #f2f2f2;">
+	# 							<td style="padding: 10px; border: 1px solid #ddd;"><strong>Transaction ID:</strong></td>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;">{self.name}</td>
+	# 						</tr>
+	# 						<tr>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;"><strong>Payment Date:</strong></td>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;">{payment_date}</td>
+	# 						</tr>
+	# 						<tr style="background-color: #f2f2f2;">
+	# 							<td style="padding: 10px; border: 1px solid #ddd;"><strong>Total Amount:</strong></td>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;">{self.grand_total}</td>
+	# 						</tr>
+	# 						<tr>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;"><strong>Paid By:</strong></td>
+	# 							<td style="padding: 10px; border: 1px solid #ddd;">{self.customer}</td>
+	# 						</tr>
+	# 					</tbody>
+	# 				</table>
+	# 			</div>
+	# 			<h3 style="margin-top: 20px; color: #007bff; text-align: center;">Payment Details</h3>
+	# 			<table style="border-collapse: collapse; width: 100%; margin: auto; background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px;">
+	# 				<thead>
+	# 					<tr style="background-color: #007bff; color: white;">
+	# 						<th style="padding: 10px; border: 1px solid #ddd;">Item Code</th>
+	# 						<th style="padding: 10px; border: 1px solid #ddd;">Quantity</th>
+	# 						<th style="padding: 10px; border: 1px solid #ddd;">Amount</th>
+	# 						<th style="padding: 10px; border: 1px solid #ddd;">Remarks</th>
+	# 					</tr>
+	# 				</thead>
+	# 				<tbody>{payment_rows}</tbody>
+	# 			</table>
+	# 			<h3 style="margin-top: 20px; color: #e74c3c; text-align: center;">Pending Payments</h3>
+	# 			<table style="border-collapse: collapse; width: 100%; margin: auto; background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px;">
+	# 				<thead>
+	# 					<tr style="background-color: #e74c3c; color: white;">
+	# 						<th style="padding: 10px; border: 1px solid #ddd;">Amount</th>
+	# 						<th style="padding: 10px; border: 1px solid #ddd;">Remarks</th>
+	# 					</tr>
+	# 				</thead>
+	# 				<tbody>{pending_rows}</tbody>
+	# 			</table>
+	# 			<p style="margin-top: 20px;">Thank you.</p>
+	# 			<div style="text-align: center; padding: 10px; font-size: 14px; color: #777; border-top: 1px solid #ddd;">
+	# 				<p style="margin: 0;">This is an automated email for payment notifications.</p>
+	# 			</div>
+	# 		</div>
+	# 	"""
+
+	# 	# Send the emails to admin and customer
+	# 	frappe.sendmail(
+	# 		recipients=email_list,
+	# 		subject="Payment Collection",
+	# 		content=admin_message,
+
+	# 	)
+
+	# 	frappe.sendmail(
+	# 		recipients=self.customer_email_id,
+	# 		subject="Payment Confirmation",
+	# 		content=customer_message,
+
+	# 	)
+	# 	frappe.email.queue.flush()
+
+
+
+
 
 	def on_update(self):
-		# Fetch email recipients from the 'Support Setup' table
+			# Fetch email recipients from the 'Support Setup' table
 		email_ids = frappe.db.sql(
 			"SELECT email_id FROM `tabEmail Recipients` WHERE parent='Support Setup'", as_dict=1
 		)
@@ -276,7 +460,7 @@ class PaymentCollection(Document):
 				<div style="background-color: #007bff; color: white; padding: 15px; text-align: center; border-radius: 8px 8px 0 0;">
 					<h2 style="margin: 0;">Payment Collection</h2>
 				</div>
-				<p style="margin-top: 20px;">Dear Sir/Madam,</p>
+				<p style="margin-top: 20px;">Dear Sir/Medam,</p>
 				<p>This is to inform you that the payment has been successfully processed. Below are the details:</p>
 				<div style="background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
 					<h3 style="color: #007bff; margin-top: 0; text-align: center;">Transaction Summary</h3>
@@ -330,20 +514,17 @@ class PaymentCollection(Document):
 			</div>
 		"""
 
-		# Send the emails to admin and customer
-		frappe.sendmail(
-			recipients=email_list,
-			subject="Payment Collection",
-			content=admin_message,
-
+		# Use enqueue to send the emails in the background
+		frappe.enqueue(
+			send_payment_emails, 
+			email_list=email_list, 
+			customer_email_id=self.customer_email_id, 
+			admin_message=admin_message, 
+			customer_message=customer_message
 		)
 
-		frappe.sendmail(
-			recipients=self.customer_email_id,
-			subject="Payment Confirmation",
-			content=customer_message,
 
-		)
+
 
 
 
@@ -352,6 +533,24 @@ class PaymentCollection(Document):
 			frappe.db.set_value("Maintenance Visit",self.maintenance_visit,"custom_payment_done",0)
 
 
+
+
+def send_payment_emails(email_list, customer_email_id, admin_message, customer_message):
+    # Send the emails to admin and customer
+    frappe.sendmail(
+        recipients=email_list,
+        subject="Payment Collection",
+        content=admin_message,
+    )
+
+    frappe.sendmail(
+        recipients=customer_email_id,
+        subject="Payment Confirmation",
+        content=customer_message,
+    )
+
+    # Ensure emails are sent in the background
+    frappe.email.queue.flush()
 
 @frappe.whitelist()
 def get_unique_sold_items_by_customer(customer):

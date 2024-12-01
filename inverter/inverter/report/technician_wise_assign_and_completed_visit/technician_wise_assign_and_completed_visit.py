@@ -110,7 +110,7 @@ def execute(filters=None):
         {"label": "Actual Visit Date", "fieldname": "actual_visit_date", "fieldtype": "Date"},
         {"label": "Completion Status", "fieldname": "completion_status", "fieldtype": "Data"},
         {"label": "Area", "fieldname": "area", "fieldtype": "Data", "width": 200},
-        {"label": "Delayed (in days)", "fieldname": "delayed_days", "fieldtype": "Int", "width": 150},
+        {"label": "Delayed (in days)", "fieldname": "delayed_days", "fieldtype": "Data", "width": 150},
     ]
 
     data = []
@@ -159,6 +159,45 @@ def execute(filters=None):
 
     maintenance_details = frappe.db.sql(query, values, as_dict=True)
 
+    # for detail in maintenance_details:
+    #     scheduled_date = detail.scheduled_date
+    #     actual_visit_date = detail.actual_visit_date
+    #     delayed_days = None
+
+    #     if scheduled_date:
+    #         if actual_visit_date:
+    #             delayed_days = (scheduled_date - actual_visit_date).days
+    #         else:
+    #             delayed_days = (scheduled_date - today).days if today > scheduled_date else 0
+
+    #     # Determine color for delayed days in terminal
+    #     if delayed_days < 0:
+    #         delayed_days_text = f"\033[91m{delayed_days}\033[0m"  # Red for negative
+    #     elif delayed_days == 0:
+    #         delayed_days_text = f"\033[93m{delayed_days}\033[0m"  # Yellow/Orange for zero
+    #     else:
+    #         delayed_days_text = f"\033[92m{delayed_days}\033[0m"  # Green for positive
+
+    #     # Print the colored text
+    #     print(delayed_days_text)
+
+
+    #     # Append data
+    #     data.append({
+    #         "name": detail.name,
+    #         "customer": detail.customer,
+    #         "item_code": detail.item_code,
+    #         "scheduled_date": scheduled_date,
+    #         "technician_title": detail.technician_title,
+    #         "actual_visit_date": actual_visit_date,
+    #         "completion_status": detail.completion_status,
+    #         "area": detail.area,
+    #         "delayed_days": delayed_days_text,
+            
+    #     })
+
+    # return columns, data
+
     for detail in maintenance_details:
         scheduled_date = detail.scheduled_date
         actual_visit_date = detail.actual_visit_date
@@ -170,13 +209,9 @@ def execute(filters=None):
             else:
                 delayed_days = (scheduled_date - today).days if today > scheduled_date else 0
 
-        # Determine color and HTML for delayed days
-        if delayed_days < 0:
-            delayed_days_html = f'<span style="color:red; font-weight:bold;">{delayed_days}</span>'
-        elif delayed_days == 0:
-            delayed_days_html = f'<span style="color:orange; font-weight:bold;">{delayed_days}</span>'
-        else:
-            delayed_days_html = f'<span style="color:green; font-weight:bold;">{delayed_days}</span>'
+        # Determine color for delayed days
+        color = "red" if delayed_days < 0 else "black" if delayed_days == 0 else "green"
+        delayed_days_colored = f"<span style='color:{color};justify-content:right;display:flex;'>{delayed_days}</span>"
 
         # Append data
         data.append({
@@ -188,8 +223,7 @@ def execute(filters=None):
             "actual_visit_date": actual_visit_date,
             "completion_status": detail.completion_status,
             "area": detail.area,
-            "delayed_days": delayed_days,
-            "delayed_days__html": delayed_days_html,  # HTML representation for the color
+            "delayed_days": delayed_days_colored,  # Store HTML-formatted string
         })
 
     return columns, data
