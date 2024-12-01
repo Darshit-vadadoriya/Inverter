@@ -49,6 +49,16 @@ frappe.ui.form.on('Maintenance Visit', {
 
 
     },
+    on_update: function(frm) {
+        
+        let current_time = new Date();
+        let hours = current_time.getHours();
+        let minutes = current_time.getMinutes();
+        
+        let time_string = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+        
+        frm.set_value('custom_time_field', time_string);
+    },
     customer: function (frm) {
         set_serialno_filter(frm)
     }
@@ -162,9 +172,8 @@ function get_schedules(frm) {
                                 },
                                 callback: function (r) {
                                     if (r.message) {
-                                        // Log the combined data (schedule details + parent schedule details)
-                                        console.log('Combined Data:', r.message);
-
+                                        
+                                        frappe.model.clear_table(frm.doc, 'purposes');
                                         // Access schedule details
                                         const scheduleDetail = r.message.schedule_detail;
 
@@ -176,6 +185,7 @@ function get_schedules(frm) {
 
                                         // Set the 'customer' field with the 'customer' from the maintenance_schedule
                                         frm.set_value('customer', maintenanceSchedule.customer);
+                                        frm.set_value("maintenance_type","Scheduled")
                                         frm.add_child("purposes", {
                                             item_code: scheduleDetail.item_code,
                                             item_name: scheduleDetail.item_name,

@@ -97,7 +97,6 @@
 
 #     return columns, data
     
-
 import frappe
 from datetime import date
 
@@ -107,14 +106,15 @@ def execute(filters=None):
         {"label": "Customer", "fieldname": "customer", "fieldtype": "Link", "options": "Customer", "width": 150},
         {"label": "Item Code", "fieldname": "item_code", "fieldtype": "Link", "options": "Item"},
         {"label": "Scheduled Date", "fieldname": "scheduled_date", "fieldtype": "Date"},
-        {"label": "Technician", "fieldname": "technician_title", "fieldtype": "Data", "width": 150},  # Show title, not ID
+        {"label": "Technician", "fieldname": "technician_title", "fieldtype": "Data", "width": 150},
         {"label": "Actual Visit Date", "fieldname": "actual_visit_date", "fieldtype": "Date"},
         {"label": "Completion Status", "fieldname": "completion_status", "fieldtype": "Data"},
         {"label": "Area", "fieldname": "area", "fieldtype": "Data", "width": 200},
-        {"label": "Delayed (in days)", "fieldname": "delayed_days", "fieldtype": "Int", "width": 150},
+        {"label": "Delayed (in days)", "fieldname": "delayed_days", "fieldtype": "Data", "width": 150},
     ]
 
     data = []
+    today = date.today()
 
     query = """
         SELECT 
@@ -136,27 +136,11 @@ def execute(filters=None):
         WHERE 
             ms.docstatus = 1
     """
-    
+
     conditions = []
     values = []
 
-    # Get the logged-in user and their roles
-    current_user = frappe.session.user
-    user_roles = frappe.get_roles(current_user)
-
-    # Apply role-based filtering for Technicians
-    if "Technician" in user_roles and "Admin" not in user_roles:
-        # Restrict data to schedules where the technician is linked to the logged-in user
-        conditions.append("""
-            msd.custom_technician IN (
-                SELECT name 
-                FROM `tabEmployee`
-                WHERE user_id = %s
-            )
-        """)
-        values.append(current_user)
-
-    # Apply filters based on the user inputs
+    # Apply filters
     if filters.get("technician"):
         conditions.append("msd.custom_technician = %s")
         values.append(filters["technician"])
@@ -170,41 +154,76 @@ def execute(filters=None):
         conditions.append("ms.custom_locality = %s")
         values.append(filters["locality"])
 
-    # Add conditions to the query
     if conditions:
         query += " AND " + " AND ".join(conditions)
 
-    # Execute the query
     maintenance_details = frappe.db.sql(query, values, as_dict=True)
 
-    # Prepare the data for the report
-    today = date.today()
+    # for detail in maintenance_details:
+    #     scheduled_date = detail.scheduled_date
+    #     actual_visit_date = detail.actual_visit_date
+    #     delayed_days = None
+
+    #     if scheduled_date:
+    #         if actual_visit_date:
+    #             delayed_days = (scheduled_date - actual_visit_date).days
+    #         else:
+    #             delayed_days = (scheduled_date - today).days if today > scheduled_date else 0
+
+    #     # Determine color for delayed days in terminal
+    #     if delayed_days < 0:
+    #         delayed_days_text = f"\033[91m{delayed_days}\033[0m"  # Red for negative
+    #     elif delayed_days == 0:
+    #         delayed_days_text = f"\033[93m{delayed_days}\033[0m"  # Yellow/Orange for zero
+    #     else:
+    #         delayed_days_text = f"\033[92m{delayed_days}\033[0m"  # Green for positive
+
+    #     # Print the colored text
+    #     print(delayed_days_text)
+
+
+    #     # Append data
+    #     data.append({
+    #         "name": detail.name,
+    #         "customer": detail.customer,
+    #         "item_code": detail.item_code,
+    #         "scheduled_date": scheduled_date,
+    #         "technician_title": detail.technician_title,
+    #         "actual_visit_date": actual_visit_date,
+    #         "completion_status": detail.completion_status,
+    #         "area": detail.area,
+    #         "delayed_days": delayed_days_text,
+            
+    #     })
+
+    # return columns, data
 
     for detail in maintenance_details:
         scheduled_date = detail.scheduled_date
         actual_visit_date = detail.actual_visit_date
         delayed_days = None
 
-        # Calculate delayed days
         if scheduled_date:
             if actual_visit_date:
-                delayed_days = (actual_visit_date - scheduled_date).days
+                delayed_days = (scheduled_date - actual_visit_date).days
             else:
-                if today < scheduled_date:
-                    delayed_days = 0  # No delay yet
-                else:
-                    delayed_days = (today - scheduled_date).days
+                delayed_days = (scheduled_date - today).days if today > scheduled_date else 0
 
+        # Determine color for delayed days
+        color = "red" if delayed_days < 0 else "black" if delayed_days == 0 else "green"
+        delayed_days_colored = f"<span style='color:{color};justify-content:right;display:flex;'>{delayed_days}</span>"
+
+        # Append data
         data.append({
             "name": detail.name,
             "customer": detail.customer,
             "item_code": detail.item_code,
             "scheduled_date": scheduled_date,
-            "technician_title": detail.technician_title,  # Show title of technician
+            "technician_title": detail.technician_title,
             "actual_visit_date": actual_visit_date,
             "completion_status": detail.completion_status,
             "area": detail.area,
-            "delayed_days": delayed_days
+            "delayed_days": delayed_days_colored,  # Store HTML-formatted string
         })
 
     return columns, data

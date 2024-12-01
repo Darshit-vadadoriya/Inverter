@@ -79,3 +79,5 @@ function get_today_date() {
     var date = new Date();
     return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 }
+
+
