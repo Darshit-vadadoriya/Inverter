@@ -47,7 +47,8 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Received By Field Engineer\nApproved By Admin"
+   "options": "Received By Field Engineer\nApproved By Admin",
+   "permlevel": 1
   },
   {
    "fieldname": "section_break_fcbo",
@@ -163,7 +164,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-28 22:47:28.013381",
+ "modified": "2024-12-01 12:44:16.034195",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Payment Collection",
