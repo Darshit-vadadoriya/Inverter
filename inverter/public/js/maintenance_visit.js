@@ -172,9 +172,8 @@ function get_schedules(frm) {
                                 },
                                 callback: function (r) {
                                     if (r.message) {
-                                        // Log the combined data (schedule details + parent schedule details)
-                                        console.log('Combined Data:', r.message);
-
+                                        
+                                        frappe.model.clear_table(frm.doc, 'purposes');
                                         // Access schedule details
                                         const scheduleDetail = r.message.schedule_detail;
 
