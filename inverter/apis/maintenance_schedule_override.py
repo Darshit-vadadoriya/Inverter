@@ -165,139 +165,179 @@ from frappe.utils import add_days, today
 
 
 def assign_schedule(doc, method):
-        # Fetch all necessary data using frappe.get_list without as_dict
-        technician_data = frappe.get_list("Employee", 
-            fields=["name", "first_name"], filters={"name": ["in", [i.custom_technician for i in doc.schedules]]})
-        
-        locality_data = frappe.get_list("Maintenance Schedule", 
-            fields=["name", "custom_locality"], filters={"name": ["in", [i.parent for i in doc.schedules]]})
+    # Fetch all necessary data using frappe.get_list without as_dict
+    technician_data = frappe.get_list("Employee", 
+        fields=["name", "first_name"], filters={"name": ["in", [i.custom_technician for i in doc.schedules]]})
+    
+    locality_data = frappe.get_list("Maintenance Schedule", 
+        fields=["name", "custom_locality"], filters={"name": ["in", [i.parent for i in doc.schedules]]})
 
-        # Convert the fetched data to dictionaries for fast lookups
-        technician_names = {t["name"]: t["first_name"] for t in technician_data}
-        localities = {l["name"]: l["custom_locality"] for l in locality_data}
+    # Convert the fetched data to dictionaries for fast lookups
+    technician_names = {t["name"]: t["first_name"] for t in technician_data}
+    localities = {l["name"]: l["custom_locality"] for l in locality_data}
 
-        # Prepare lists to store email details and schedules for update
-        emails_to_send = []
-        schedules_to_update = []
+    # Prepare lists to store email details and schedules for update
+    emails_to_send = []
+    schedules_to_update = []
 
-        # Loop through schedules and prepare email details
-        for i in doc.schedules:
-            if i.custom_email == 0 and i.custom_technician:
-                technician = technician_names.get(i.custom_technician, "")
-                locality = localities.get(i.parent, "")
-                schedule_date = formatdate(i.scheduled_date, "dd-mm-yyyy")
+    # Loop through schedules and prepare email details
+    for i in doc.schedules:
+        if i.custom_email == 0 and i.custom_technician:
+            technician = technician_names.get(i.custom_technician, "")
+            locality = localities.get(i.parent, "")
+            schedule_date = formatdate(i.scheduled_date, "dd-mm-yyyy")
 
-                # Create email content
-                message = f"""
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Maintenance Schedule Assignment</title>
-                        <style>
-                            body {{
-                                font-family: Arial, sans-serif;
-                                background-color: #f4f4f4;
-                                margin: 0;
-                                padding: 0;
-                                line-height: 1.6;
-                            }}
-                            .container {{
-                                max-width: 600px;
-                                margin: 20px auto;
-                                background: #ffffff;
-                                padding: 20px;
-                                border-radius: 8px;
-                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                            }}
-                            .header {{
-                                text-align: center;
-                                margin-bottom: 20px;
-                            }}
-                            .header h1 {{
-                                color: #333333;
-                                margin: 0;
-                                font-size: 24px;
-                            }}
-                            .content {{
-                                color: #555555;
-                                font-size: 16px;
-                            }}
-                            .content ul {{
-                                padding-left: 20px;
-                            }}
-                            .content ul li {{
-                                margin-bottom: 10px;
-                            }}
-                            .footer {{
-                                margin-top: 20px;
-                                text-align: center;
-                                font-size: 12px;
-                                color: #888888;
-                            }}
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <div class="header">
-                                <h1>Maintenance Schedule Assignment</h1>
-                            </div>
-                            <div class="content">
-                                <p>Dear {technician},</p>
-                                <p>You have been assigned a new maintenance schedule. Please find the details below:</p>
-                                <ul>
-                                    <li><strong>Item Name:</strong> {i.item_code}</li>
-                                    <li><strong>Scheduled Date:</strong> {schedule_date}</li>
-                                    <li><strong>Assigned By:</strong> {frappe.session.user}</li>
-                                    <li><strong>Area:</strong> {locality}</li>
-                                </ul>
-                                <p>Ensure to complete the maintenance as scheduled. For further assistance, contact the support team.</p>
-                            </div>
-                            <div class="footer">
-                                <p>This email was generated automatically by the Maintenance Management System.</p>
-                            </div>
-                        </div>
-                    </body>
-                    </html>
-                """
+            # Create email content
+            message = f"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Maintenance Schedule Assignment</title>
+                <style>
+                    body {{
+                        font-family: 'Arial', sans-serif;
+                        margin: 0;
+                        padding: 0;
+                        background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+                        color: #333;
+                    }}
+                    .container {{
+                        max-width: 650px;
+                        margin: 30px auto;
+                        background: #ffffff;
+                        border-radius: 15px;
+                        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+                        overflow: hidden;
+                        font-size: 16px;
+                    }}
+                    .header {{
+                        background: linear-gradient(to right, #007BFF, #0056b3);
+                        padding: 20px;
+                        text-align: center;
+                        color: #fff;
+                    }}
+                    .header h1 {{
+                        margin: 0;
+                        font-size: 26px;
+                        font-weight: bold;
+                    }}
+                    .content {{
+                        padding: 20px 30px;
+                        line-height: 1.8;
+                        color: #555;
+                    }}
+                    .content ul {{
+                        list-style: none;
+                        padding: 0;
+                        margin: 15px 0;
+                    }}
+                    .content ul li {{
+                        margin-bottom: 10px;
+                        background: #f8f9fa;
+                        padding: 12px 15px;
+                        border-left: 4px solid #007BFF;
+                        border-radius: 8px;
+                        font-size: 15px;
+                        color: #444;
+                    }}
+                    .content ul li strong {{
+                        color: #007BFF;
+                    }}
+                    .action-button {{
+                        display: block;
+                        text-align: center;
+                        margin: 30px auto 20px;
+                        padding: 15px 30px;
+                        background: #007BFF;
+                        color: #ffffff;
+                        text-decoration: none;
+                        font-size: 18px;
+                        font-weight: bold;
+                        border-radius: 25px;
+                        width: 60%;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                        transition: all 0.3s ease;
+                    }}
+                    .action-button:hover {{
+                        background: #0056b3;
+                        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+                    }}
+                    .footer {{
+                        background: #f1f1f1;
+                        text-align: center;
+                        padding: 15px;
+                        font-size: 14px;
+                        color: #777;
+                        border-top: 1px solid #e0e0e0;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1>Maintenance Schedule Assignment</h1>
+                    </div>
+                    <div class="content">
+                        <p>Dear {technician},</p>
+                        <p>You have been assigned a new maintenance schedule. Below are the details:</p>
+                        <ul>
+                            <li><strong>Item Name:</strong> {i.item_code}</li>
+                            <li><strong>Scheduled Date:</strong> {schedule_date}</li>
+                            <li><strong>Assigned By:</strong> {frappe.session.user}</li>
+                            <li><strong>Area:</strong> {locality}</li>
+                        </ul>
+                    <p>Kindly review the schedule and proceed as planned. Should you have any questions, feel free to reach out to the support team.</p>
+                    </div>
+                    
+                </div>
+            </body>
+            </html>
+            """
 
-                # Add email details to the list
-                emails_to_send.append({
-                    "recipients": i.custom_technician_email,
-                    "subject": "Maintenance Schedule Assignment",
-                    "message": message,
-                })
+            # Add email details to the list
+            emails_to_send.append({
+                "recipients": i.custom_technician_email,
+                "subject": "Maintenance Schedule Assignment",
+                "message": message,
+            })
 
-                # Mark the schedule to indicate the email has been sent
-                schedules_to_update.append(i)
+            # Mark the schedule to indicate the email has been sent
+            schedules_to_update.append(i)
 
-        # Batch update the schedules (using ORM)
-        if schedules_to_update:
-            for schedule in schedules_to_update:
-                schedule.custom_email = 1
-                schedule.save()
+    # Batch update the schedules (using ORM)
+    if schedules_to_update:
+        for schedule in schedules_to_update:
+            schedule.custom_email = 1
+            schedule.save()
 
-        # Enqueue email sending in the background
-        if emails_to_send:
-            # Use frappe.enqueue to send emails in the background
+    # Enqueue email sending in the background
+    if emails_to_send:
+        try:
             frappe.enqueue(
                 send_bulk_emails,
                 emails_to_send=emails_to_send,
-                timeout=300  # Adjust the timeout as needed
             )
+        
+        except Exception as e:
+            print(e)
 
 # Function to send emails in the background
 def send_bulk_emails(emails_to_send):
-    for email in emails_to_send:
-        frappe.sendmail(
-            recipients=email["recipients"],
-            subject=email["subject"],
-            message=email["message"]
-        )
-    
-    # Flush the email queue to send emails immediately
-    frappe.email.queue.flush()
+    try:
+        for email in emails_to_send:
+            frappe.log_error(message=email, title="Attempting to Send Email")
+            frappe.sendmail(
+                recipients=email["recipients"],
+                subject=email["subject"],
+                message=email["message"]
+            )
+        
+        frappe.email.queue.flush()
+        
+    except Exception as e:
+        print(e)
 
 
 # @frappe.whitelist()
@@ -382,84 +422,85 @@ def schedule_reminder():
     
     # Get reminder days from setup
     days = frappe.db.get_single_value("Support Setup", "schedule_reminder")
-    reminder_date = add_days(today(), -int(days))  # Calculate the reminder date
-    
-    # Fetch pending maintenance records that are submitted (docstatus = 1)
-    records = frappe.db.get_all(
-        "Maintenance Schedule Detail",
-        fields=["parent", "item_name", "scheduled_date"],
-        filters={
-            "completion_status": "Pending",
-            "scheduled_date": ["<=", reminder_date],  # Schedule date within the next X days
-            "docstatus": 1  # Only submitted maintenance schedules
-        }
-    )
-    
-    # If no records, log a message and stop execution
-    if not records:
-        frappe.msgprint("No pending maintenance schedules found.")
-        return
-    
-    # Create HTML table with improved design and clickable links
-    table_html = """
-    <table style="width: 100%; border: 1px solid #e0e0e0; border-collapse: collapse; font-family: Arial, sans-serif; text-align: left; margin-top: 20px;">
-        <thead style="background-color: #4CAF50; color: white;">
-            <tr>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Maintenance Schedule</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Item Name</th>
-                <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Scheduled Date</th>
-            </tr>
-        </thead>
-        <tbody style="background-color: #f9f9f9;">
-    """
-    
-    # Loop through the records to populate the table rows
-    for record in records:
-        schedule_date = frappe.utils.formatdate(record.scheduled_date, "dd-MM-yyyy")
-        maintenance_schedule_link = f'<a href="/app/maintenance-schedule/{record.parent}" target="_blank" style="color: black; text-decoration: underline;">{record.parent}</a>'
-        table_html += f"""
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #333;">{maintenance_schedule_link}</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #333;">{record.item_name}</td>
-                <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #333;">{schedule_date}</td>
-            </tr>
-        """
-    
-    table_html += """
-        </tbody>
-    </table>
-    """
-    
-    # Email Subject and Message
-    subject = "Reminder: Pending Maintenance Schedules"
-    message = f"""
-    <html>
-        <body style="font-family: Arial, sans-serif; color: #555;">
-            <div style="background-color: #f7f7f7; padding: 20px; border-radius: 5px;">
-                <h3 style="color: #333; font-weight: bold;">Dear Sir/Medam,</h3>
-                
-                <p style="font-size: 16px; color: #333;">We are sending this reminder regarding the following <strong>pending maintenance schedules</strong> that require your attention. Please review the details below:</p>
-                
-                {table_html}
-                
-             
-                <hr style="border-top: 1px solid #ddd; margin: 20px 0;">
-                <p style="font-size: 14px; color: #999;">This is an automated reminder. Please do not reply to this email.</p>
-            </div>
-        </body>
-    </html>
-    """
-    
-    # Send email
-    try:
-        frappe.sendmail(
-            recipients=email_list,
-            subject=subject,
-            message=message,
-            header="Reminder: Pending Maintenance Schedules"
+    if days != 0:
+        reminder_date = add_days(today(), -int(days))  # Calculate the reminder date
+        
+        # Fetch pending maintenance records that are submitted (docstatus = 1)
+        records = frappe.db.get_all(
+            "Maintenance Schedule Detail",
+            fields=["parent", "item_name", "scheduled_date"],
+            filters={
+                "completion_status": "Pending",
+                "scheduled_date": ["<=", reminder_date],  # Schedule date within the next X days
+                "docstatus": 1  # Only submitted maintenance schedules
+            }
         )
-        frappe.email.queue.flush()
-        frappe.msgprint("Reminder email sent successfully.")
-    except Exception as e:
-        frappe.log_error(f"Error sending email: {str(e)}", "Schedule Reminder Email Error")
-        frappe.msgprint(f"Error sending email: {str(e)}")
+        
+        # If no records, log a message and stop execution
+        if not records:
+            frappe.msgprint("No pending maintenance schedules found.")
+            return
+        
+        # Create HTML table with improved design and clickable links
+        table_html = """
+        <table style="width: 100%; border: 1px solid #e0e0e0; border-collapse: collapse; font-family: Arial, sans-serif; text-align: left; margin-top: 20px;">
+            <thead style="background-color: #4CAF50; color: white;">
+                <tr>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Maintenance Schedule</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Item Name</th>
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: center;">Scheduled Date</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: #f9f9f9;">
+        """
+        
+        # Loop through the records to populate the table rows
+        for record in records:
+            schedule_date = frappe.utils.formatdate(record.scheduled_date, "dd-MM-yyyy")
+            maintenance_schedule_link = f'<a href="/app/maintenance-schedule/{record.parent}" target="_blank" style="color: black; text-decoration: underline;">{record.parent}</a>'
+            table_html += f"""
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #333;">{maintenance_schedule_link}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #333;">{record.item_name}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center; color: #333;">{schedule_date}</td>
+                </tr>
+            """
+        
+        table_html += """
+            </tbody>
+        </table>
+        """
+        
+        # Email Subject and Message
+        subject = "Reminder: Pending Maintenance Schedules"
+        message = f"""
+        <html>
+            <body style="font-family: Arial, sans-serif; color: #555;">
+                <div style="background-color: #f7f7f7; padding: 20px; border-radius: 5px;">
+                    <h3 style="color: #333; font-weight: bold;">Dear Sir/Medam,</h3>
+                    
+                    <p style="font-size: 16px; color: #333;">We are sending this reminder regarding the following <strong>pending maintenance schedules</strong> that require your attention. Please review the details below:</p>
+                    
+                    {table_html}
+                    
+                
+                    <hr style="border-top: 1px solid #ddd; margin: 20px 0;">
+                    <p style="font-size: 14px; color: #999;">This is an automated reminder. Please do not reply to this email.</p>
+                </div>
+            </body>
+        </html>
+        """
+        
+        # Send email
+        try:
+            frappe.sendmail(
+                recipients=email_list,
+                subject=subject,
+                message=message,
+                header="Reminder: Pending Maintenance Schedules"
+            )
+            frappe.email.queue.flush()
+            frappe.msgprint("Reminder email sent successfully.")
+        except Exception as e:
+            frappe.log_error(f"Error sending email: {str(e)}", "Schedule Reminder Email Error")
+            frappe.msgprint(f"Error sending email: {str(e)}")

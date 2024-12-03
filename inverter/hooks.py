@@ -164,9 +164,15 @@ scheduler_events = {
 # 	"all": [
 # 		"inverter.tasks.all"
 # 	],
- "daily": [
-        "inverter.apis.maintenance_schedule_override.schedule_reminder"
-    ]
+#  "daily": [
+#         "inverter.apis.maintenance_schedule_override.schedule_reminder"
+#     ]
+
+ "cron": {
+        "0 9 * * *": [
+            "inverter.apis.maintenance_schedule_override.schedule_reminder"
+        ]
+    }
 
 # 	"daily": [
 # 		"inverter.tasks.daily"

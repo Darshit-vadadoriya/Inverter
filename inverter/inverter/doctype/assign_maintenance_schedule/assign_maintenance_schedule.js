@@ -46,7 +46,7 @@ frappe.ui.form.on("Assign Maintenance Schedule", {
 	},
     assign_schedule(frm){
         frappe.call({
-            method:'inverter.inverter.doctype.maintenance_schedule_assignment.maintenance_schedule_assignment.assign_schedule',
+            method:'inverter.inverter.doctype.assign_maintenance_schedule.assign_maintenance_schedule.assign_schedule',
             args:{
                 name:frm.doc.name
             },

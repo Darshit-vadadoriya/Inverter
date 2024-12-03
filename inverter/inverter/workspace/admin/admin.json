@@ -1,7 +1,7 @@
 {
  "charts": [],
  "content": "[{\"id\":\"aBDlLMIjME\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Admin</span>\",\"col\":12}},{\"id\":\"0-xMnqDXhG\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"fotJwInR29\",\"type\":\"card\",\"data\":{\"card_name\":\"Purchase\",\"col\":4}},{\"id\":\"kvu2wVw-oX\",\"type\":\"card\",\"data\":{\"card_name\":\"Inventory\",\"col\":4}},{\"id\":\"aj29h2b_Km\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales\",\"col\":4}},{\"id\":\"iTZ7Mu4ktd\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"lwjOnaMBCG\",\"type\":\"card\",\"data\":{\"card_name\":\"Maintenance\",\"col\":4}},{\"id\":\"otmP79AMFS\",\"type\":\"card\",\"data\":{\"card_name\":\"Maintenance Schedule Reports\",\"col\":4}}]",
- "creation": "2024-10-11 13:12:25.009457",
+ "creation": "2024-12-04 00:40:12.689046",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -344,7 +344,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Maintenance",
-   "link_count": 4,
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -388,9 +388,19 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Assign Maintenance Schedule",
+   "link_count": 0,
+   "link_to": "Assign Maintenance Schedule",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-11-27 22:54:32.915615",
+ "modified": "2024-12-04 01:28:23.548978",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Admin",
