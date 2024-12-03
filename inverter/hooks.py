@@ -160,10 +160,14 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 # 	"all": [
 # 		"inverter.tasks.all"
 # 	],
+ "daily": [
+        "inverter.apis.maintenance_schedule_override.schedule_reminder"
+    ]
+
 # 	"daily": [
 # 		"inverter.tasks.daily"
 # 	],
@@ -176,7 +180,7 @@ doc_events = {
 # 	"monthly": [
 # 		"inverter.tasks.monthly"
 # 	],
-# }
+}
 
 # Testing
 # -------

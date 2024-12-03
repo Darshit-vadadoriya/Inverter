@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-12-03 21:36:44.748746",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "from_date",
+  "to_date",
+  "column_break_rrza",
+  "get_schedules",
+  "company",
+  "section_break_lqtn",
+  "schedule_assignment",
+  "assign_schedule"
+ ],
+ "fields": [
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "column_break_rrza",
+   "fieldtype": "Column Break",
+   "options": "{from_date}.-.{to_date}"
+  },
+  {
+   "fieldname": "get_schedules",
+   "fieldtype": "Button",
+   "label": "Get Schedules"
+  },
+  {
+   "fieldname": "section_break_lqtn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "schedule_assignment",
+   "fieldtype": "Table",
+   "options": "Schedule Assign"
+  },
+  {
+   "fieldname": "assign_schedule",
+   "fieldtype": "Button",
+   "label": "Assign Schedule"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-12-03 22:45:39.642455",
+ "modified_by": "Administrator",
+ "module": "Inverter",
+ "name": "Assign Maintenance Schedule",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
