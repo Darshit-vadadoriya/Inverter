@@ -1,0 +1,19 @@
+{
+ "content": null,
+ "creation": "2024-12-02 21:53:36.284252",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2024-12-02 21:53:36.284252",
+ "modified_by": "Administrator",
+ "module": "Inverter",
+ "name": "schedule-assignment",
+ "owner": "Administrator",
+ "page_name": "schedule-assignment",
+ "roles": [],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Schedule Assignment"
+}

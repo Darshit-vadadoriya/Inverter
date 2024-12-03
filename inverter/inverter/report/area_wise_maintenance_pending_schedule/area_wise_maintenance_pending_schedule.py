@@ -1,7 +1,6 @@
 # Copyright (c) 2024, Sahil Patel and contributors
 # For license information, please see license.txt
 
-
 import frappe
 
 def execute(filters=None):
@@ -24,7 +23,7 @@ def get_columns():
         {"label": "Product", "fieldname": "item_code", "width": 200},
         {"label": "Locality", "fieldname": "custom_locality", "fieldtype": "Data", "width": 180},
         {"label": "Scheduled Date", "fieldname": "scheduled_date", "fieldtype": "Date", "width": 140},
-        {"label": "Delay (In Days)", "fieldname": "days_difference", "fieldtype": "Int", "width": 120},
+        {"label": "Delay (In Days)", "fieldname": "days_difference", "fieldtype": "Text", "width": 120},  # Changed to Text to render HTML
     ]
 
 
@@ -32,7 +31,6 @@ def get_data(filters):
     """
     Fetches the data for the report based on the filters provided.
     """
-
     # Build query with conditions
     conditions = get_conditions(filters)
     query = f"""
@@ -59,21 +57,24 @@ def get_data(filters):
             msd.scheduled_date ASC
     """
 
-    # Log the final query for debugging
-    
     # Execute the query and fetch data
     try:
         result = frappe.db.sql(query, filters, as_dict=True)
 
-        # Process results
+        # Process the result to apply color formatting to 'days_difference'
         for row in result:
-            # Here, we ensure the result is correctly processed
-            pass
+            # Apply red color if days_difference > 0, else green color
+            if row['days_difference'] > 0:
+                row['days_difference'] = f'<span style="color: red;justify-content:right;display:flex;">{row["days_difference"]}</span>'
+            else:
+                row['days_difference'] = f'<span style="justify-content:right;display:flex;">{row["days_difference"]}</span>'
 
         return result
 
     except Exception as e:
+        frappe.log_error(f"Error in fetching data: {e}")
         return []
+
 
 def get_conditions(filters):
     """
@@ -91,8 +92,6 @@ def get_conditions(filters):
         conditions.append("msd.scheduled_date <= %(to_date)s")
     
     if filters.get("custom_locality"):
-        print(filters.get("custom_locality"))
-        print("\n\n\n\n\n\n\n")
         conditions.append("ms.custom_locality = %(custom_locality)s")
     
     if filters.get("company"):
@@ -118,7 +117,6 @@ def get_conditions(filters):
     
     # Combine conditions with AND
     return " AND " + " AND ".join(conditions) if conditions else ""
-
 
 
 def get_financial_year_range(financial_year):
