@@ -54,8 +54,7 @@
    "fieldname": "email",
    "fieldtype": "Check",
    "in_list_view": 1,
-   "label": "Email",
-   "read_only": 1
+   "label": "Email"
   },
   {
    "fieldname": "id",
@@ -67,7 +66,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-12-03 22:15:29.157113",
+ "modified": "2024-12-14 03:38:22.589405",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Schedule Assign",

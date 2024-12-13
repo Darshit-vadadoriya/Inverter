@@ -6,6 +6,9 @@
 
 // 	},
 // });
+
+
+
 frappe.ui.form.on("Assign Maintenance Schedule", {
 	get_schedules(frm) {
         var from_date = frm.doc.from_date

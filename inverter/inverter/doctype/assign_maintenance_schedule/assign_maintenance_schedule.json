@@ -1,10 +1,12 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-12-03 21:36:44.748746",
+ "autoname": "naming_series:",
+ "creation": "2024-12-14 02:16:28.831855",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "from_date",
   "to_date",
   "column_break_rrza",
@@ -12,18 +14,23 @@
   "company",
   "section_break_lqtn",
   "schedule_assignment",
-  "assign_schedule"
+  "assign_schedule",
+  "amended_from"
  ],
  "fields": [
   {
    "fieldname": "from_date",
    "fieldtype": "Date",
-   "label": "From Date"
+   "in_list_view": 1,
+   "label": "From Date",
+   "reqd": 1
   },
   {
    "fieldname": "to_date",
    "fieldtype": "Date",
-   "label": "To Date"
+   "in_list_view": 1,
+   "label": "To Date",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_rrza",
@@ -36,6 +43,14 @@
    "label": "Get Schedules"
   },
   {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
    "fieldname": "section_break_lqtn",
    "fieldtype": "Section Break"
   },
@@ -45,24 +60,37 @@
    "options": "Schedule Assign"
   },
   {
+   "depends_on": "eval:doc.docstatus<1",
    "fieldname": "assign_schedule",
    "fieldtype": "Button",
    "label": "Assign Schedule"
   },
   {
-   "fieldname": "company",
+   "fieldname": "amended_from",
    "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company"
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Assign Maintenance Schedule",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "default": "MAINT-MSA-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "MAINT-MSA-.YYYY.-"
   }
  ],
  "index_web_pages_for_search": 1,
- "issingle": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2024-12-03 22:45:39.642455",
+ "modified": "2024-12-14 02:33:07.153821",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Assign Maintenance Schedule",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
