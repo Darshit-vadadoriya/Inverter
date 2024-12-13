@@ -704,7 +704,7 @@
     "is_query_report": 0,
     "label": "Assign Maintenance Schedule",
     "link_count": 0,
-    "link_to": "Assign Maintenance Schedule",
+    "link_to": "Assign Maintenance Scheduled",
     "link_type": "DocType",
     "onboard": 0,
     "only_for": null,
