@@ -93,6 +93,7 @@ def assign_schedule(name):
             emails_to_send=emails_to_send,
             timeout=300
         )
+        frappe.msgprint("Schedule is assigned.")
 
 
 def send_bulk_emails(emails_to_send):
@@ -106,6 +107,7 @@ def send_bulk_emails(emails_to_send):
             message=email["message"]
         )
     frappe.email.queue.flush()
+    
 
 
 def get_email_template(technician, item, schedule_date, assigned_by, locality):
