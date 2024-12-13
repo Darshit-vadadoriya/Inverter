@@ -704,7 +704,7 @@
     "is_query_report": 0,
     "label": "Assign Maintenance Schedule",
     "link_count": 0,
-    "link_to": "Assign Maintenance Scheduled",
+    "link_to": "Assign Maintenance Schedule",
     "link_type": "DocType",
     "onboard": 0,
     "only_for": null,
@@ -715,7 +715,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2024-12-04 01:28:23.548978",
+  "modified": "2024-12-14 03:30:06.192601",
   "module": "Inverter",
   "name": "Admin",
   "number_cards": [],
