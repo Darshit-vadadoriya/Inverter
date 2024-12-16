@@ -153,6 +153,9 @@ doc_events = {
     },
     "Maintenance Schedule": {
         "on_update_after_submit": "inverter.apis.maintenance_schedule_override.assign_schedule"
+    },
+    "Purchase Order": {
+        "on_submit": "inverter.apis.purchase_order.send_purchase_order_email"
     }
 }
 
@@ -172,7 +175,7 @@ scheduler_events = {
         "0 9 * * *": [
             "inverter.apis.maintenance_schedule_override.schedule_reminder"
         ]
-    }
+    }   
 
 # 	"daily": [
 # 		"inverter.tasks.daily"
