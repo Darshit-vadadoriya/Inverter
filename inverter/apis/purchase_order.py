@@ -5,8 +5,7 @@ from frappe.utils import flt
 
 def send_purchase_order_email(doc, method):
     supplier_email = frappe.get_value("Supplier",doc.supplier,["email_id"],as_dict=1)
-    print(supplier_email)
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    
     # Fetching shipping address details if available
     ship_addr = {}
     if doc.shipping_address:
@@ -101,10 +100,13 @@ def send_purchase_order_email(doc, method):
           <div style="width: 48%; background: #f9f9f9; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
             <h3 style="margin-top: 0; color: #000; font-size: 16px; border-bottom: 2px solid #ddd; padding-bottom: 5px;">Shipping Details</h3>
             <p style="margin: 10px 0; font-size: 14px;display:inline-flex;">
-                <strong>Address:</strong> <span>{address}</span>
+                <strong>Address:</strong> <span>{address or ""}</span>
             </p>
             <p style="margin: 10px 0; font-size: 14px;">
                 <strong>Required Date:</strong> {doc.get_formatted("schedule_date")}
+            </p>
+            <p style="margin: 10px 0; font-size: 14px;">
+                <strong>Payment Terms:</strong> <span style="width:70%;display:inline-flex;">{doc.payment_schedule[0].description or ""}</span>
             </p>
           </div>
         </div>
@@ -117,6 +119,8 @@ def send_purchase_order_email(doc, method):
                 <th style="padding: 10px; border: 1px solid #000;text-align:center;">No.</th>
                 <th style="padding: 10px; border: 1px solid #000;">Item</th>
                 <th style="border: 1px solid #111; width: 85px; text-align: center;">HSN/SAC</th>
+                <th style="border: 1px solid #111; width: 85px; text-align: center;">Required Date</th>
+                <th style="border: 1px solid #111; width: 85px; text-align: center;">UOM</th>
                 <th style="padding: 10px; border: 1px solid #000; text-align: center;">Quantity</th>
                 <th style="padding: 10px; border: 1px solid #000; text-align: center;">Rate</th>
                 <th style="padding: 10px; border: 1px solid #000; text-align: center;">Amount</th>
@@ -131,8 +135,10 @@ def send_purchase_order_email(doc, method):
         html += f"""
                 <tr style="background-color: {row_color};">
                     <td style="padding: 10px; border: 1px solid #000;text-align:center;">{index}</td>
-                    <td style="padding: 10px; border: 1px solid #000;">{item.description}</td>
+                    <td style="padding: 10px; border: 1px solid #000;width:150px;">{item.description}</td>
                     <td style="border: 1px solid #111; text-align: center;">{item.gst_hsn_code}</td>
+                    <td style="border: 1px solid #111; text-align: center;">{item.get_formatted("schedule_date")}</td>
+                    <td style="border: 1px solid #111; text-align: center;">{item.uom}</td>
                     <td style="padding: 10px; border: 1px solid #000; text-align: center;">{item.get_formatted("qty")}</td>
                     <td style="padding: 10px; border: 1px solid #000; text-align: center;">{item.get_formatted("rate")}</td>
                     <td style="padding: 10px; border: 1px solid #000; text-align: center;">{item.get_formatted("amount")}</td>
@@ -142,7 +148,7 @@ def send_purchase_order_email(doc, method):
     # Add total row for items
     html += f"""
                 <tr style="background-color: #f1f1f1; font-weight: bold;">
-                    <td colspan="5" style="padding: 10px; text-align: right; border: 1px solid #000;">Total</td>
+                    <td colspan="7" style="padding: 10px; text-align: right; border: 1px solid #000;">Total</td>
                     <td style="padding: 10px; border: 1px solid #000; text-align: center;">{doc.get_formatted("total")}</td>
                 </tr>
                 </tbody>
@@ -156,8 +162,7 @@ def send_purchase_order_email(doc, method):
                 <table style="border: 1px solid #111; width: 100%; font-family: 'Helvetica Neue', Arial, sans-serif; border-collapse: collapse; font-size: 13px;" class="tax_tab">
     <thead style="background-color: #cbcbcb;">
         <tr>
-            <th rowspan="2" style="border: 1px solid #111; width: 85px; text-align: center;">HSN/SAC</th>
-            <th rowspan="2" style="border: 1px solid #111;">Taxable Value</th>
+            <th rowspan="2" style="border: 1px solid #111; text-align: center;">HSN/SAC</th>
             <th colspan="2" style="border: 1px solid #111;">CGST</th>
             <th colspan="2" style="border: 1px solid #111;">SGST/UTGST</th>
             <th rowspan="2" style="border: 1px solid #111; text-align: center;">Total Tax Amount</th>
@@ -177,8 +182,7 @@ def send_purchase_order_email(doc, method):
         for item in doc.items:
             html += f"""
             <tr>
-                <td style="border: 1px solid #111; padding: 8px; text-align: center;">{item.gst_hsn_code}</td>
-                <td style="border: 1px solid #111; padding: 8px; text-align: right;">{item.get_formatted("net_amount")}</td>
+                <td style="border: 1px solid #111; padding: 8px; text-align: center;width:150px;">{item.gst_hsn_code}</td>
                 <td style="border: 1px solid #111; padding: 8px; text-align: right;">{item.cgst_rate}%</td>
                 <td style="border: 1px solid #111; padding: 8px; text-align: right;">{item.get_formatted("cgst_amount")}</td>
                 <td style="border: 1px solid #111; padding: 8px; text-align: right;">{item.sgst_rate}%</td>
@@ -211,7 +215,7 @@ def send_purchase_order_email(doc, method):
         # total_tax = cgst_total + sgst_total
         html += f"""
                 <tr style="background-color: #f1f1f1; font-weight: bold;">
-                        <td colspan="6" style="padding: 10px; text-align: right; border: 1px solid #000;">Total</td>
+                        <td colspan="5" style="padding: 10px; text-align: right; border: 1px solid #000;">Total</td>
                         <td style="padding: 10px; border: 1px solid #000; text-align: center;">{total_tax_val}</td>
                     </tr>
                 </tbody>
@@ -219,15 +223,15 @@ def send_purchase_order_email(doc, method):
             </div>
 
     """
-    if doc.tc_name:
-        html += f"""
-        <div style="padding: 20px;">
-            <div style="margin-top: 20px; background: #f9f9f9; border-left: 4px solid #0056b3; border-radius: 5px; padding: 10px;">
-                <h3 style="margin-top: 0; color: #0056b3; font-size: 16px;">Terms and Conditions</h3>
-                <p style="font-size: 14px;">{doc.terms}</p>
-            </div>
-        </div>
-        """
+    # if doc.tc_name:
+    #     html += f"""
+    #     <div style="padding: 20px;">
+    #         <div style="margin-top: 20px; background: #f9f9f9; border-left: 4px solid #0056b3; border-radius: 5px; padding: 10px;">
+    #             <h3 style="margin-top: 0; color: #0056b3; font-size: 16px;">Terms and Conditions</h3>
+    #             <p style="font-size: 14px;">{doc.terms}</p>
+    #         </div>
+    #     </div>
+    #     """
 
     html += """        
       </div>
