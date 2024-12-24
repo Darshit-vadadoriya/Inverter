@@ -3,97 +3,142 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.utils import now
+from datetime import datetime
+    
 
 
 class AssignMaintenanceSchedule(Document):
-	pass
+
+    def on_update(self):
+       
+        for row in self.schedule_assignment:  # Iterate over each row in the child table
+            if row.id and row.schedule_date:
+                        # Fetch the current schedule_date from Maintenance Schedule Details
+                    current_schedule_date = frappe.get_value(
+                        "Maintenance Schedule Detail", 
+                        {"name": row.id}, 
+                        "scheduled_date"
+                    )
+
+                    # Only update if the schedule_date has changed
+                    if current_schedule_date != row.schedule_date:
+                        # Update the schedule_date in the Maintenance Schedule Details table
+                        frappe.db.set_value(
+                            "Maintenance Schedule Detail",
+                            row.id,
+                            "scheduled_date",
+                            row.schedule_date
+                        )
+
+    def on_submit(name):
+        # Fetch pending schedule data
+        schedule_pending_data = frappe.db.get_all(
+            "Schedule Assign",
+            fields=["*"],
+            filters={
+                "parent": name,
+                "email": 0,
+                "technician": ["!=", ""]
+            }
+        )
+
+        # Prepare email details and schedules for update
+        emails_to_send = []
+        schedules_to_update = []
+
+        for schedule in schedule_pending_data:
+            frappe.db.set_value("Maintenance Schedule Detail", schedule.id, "custom_technician", schedule.technician)
+            frappe.db.set_value("Maintenance Schedule Detail", schedule.id, "custom_technician_email", schedule.email_id)
+            if schedule["email"] == 0 and schedule["technician"]:
+                # Get technician name and locality
+                technician_name = frappe.db.get_value("Employee", schedule.technician, "first_name")
+                locality = frappe.db.get_value("Maintenance Schedule", schedule.maintenance_schedule_id, "custom_locality")
+                schedule_date = frappe.utils.formatdate(schedule["schedule_date"], "dd-mm-yyyy")
+
+                # Generate email content using a template function
+                message = get_email_template(
+                    technician=technician_name,
+                    item=schedule["item"],
+                    schedule_date=schedule_date,
+                    assigned_by=frappe.session.user,
+                    locality=locality
+                )
+
+                # Add email to the queue
+                emails_to_send.append({
+                    "recipients": schedule["email_id"],
+                    "subject": "Maintenance Schedule Assignment",
+                    "message": message,
+                })
+
+                # Update schedule email status
+                schedules_to_update.append(schedule["id"])
+                frappe.db.set_value("Maintenance Schedule Detail", schedule.id, "custom_email", 1)
+                frappe.db.set_value("Schedule Assign", schedule.name, "email", 1)
+
+        # Enqueue emails for background sending
+        if emails_to_send:
+            frappe.enqueue(
+                send_bulk_emails,
+                emails_to_send=emails_to_send,
+                timeout=300
+            )
+            frappe.msgprint("Schedule is assigned.")
+
+        
+
 
 
 @frappe.whitelist()
 def get_schedules(from_date, to_date):
-    from datetime import datetime
 
     # Parse the string inputs into date objects
     from_date = datetime.strptime(from_date, "%Y-%m-%d").date()
     to_date = datetime.strptime(to_date, "%Y-%m-%d").date()
-    query = """
-		SELECT * 
-		FROM `tabMaintenance Schedule Detail`
-		WHERE scheduled_date BETWEEN %s AND %s 
-		AND docstatus = 1 
-		AND (custom_technician = '' OR custom_technician IS NULL)
-	"""
 
+    # Validate date range
+    if from_date > to_date:
+        frappe.throw("From date cannot be greater than to date.")
+
+    # SQL query to join Maintenance Schedule and Maintenance Schedule Detail
+    # and fetch outstanding amount from Sales Invoice
+    query = """
+        SELECT 
+            ms.name AS maintenance_schedule,
+            ms.customer,
+            ms.custom_locality,
+            msd.name,
+            msd.item_code,
+            msd.custom_technician,
+            msd.custom_technician_email,
+            msd.custom_email,
+            msd.scheduled_date,
+            msd.docstatus,
+            COALESCE((
+                SELECT SUM(si.outstanding_amount)
+                FROM `tabSales Invoice` si
+                WHERE si.customer = ms.customer
+                AND si.docstatus = 1
+            ), 0) AS outstanding_amount
+        FROM 
+            `tabMaintenance Schedule` ms
+        RIGHT JOIN 
+            `tabMaintenance Schedule Detail` msd ON ms.name = msd.parent
+        WHERE 
+            msd.scheduled_date BETWEEN %s AND %s
+            AND msd.docstatus = 1
+            AND (msd.custom_technician = '' OR msd.custom_technician IS NULL)
+    """
     
     # Execute the query
     records = frappe.db.sql(query, (from_date, to_date), as_dict=True)
-    
     return records
 
 
 
 
 
-@frappe.whitelist()
-def assign_schedule(name):
-    """
-    Assign maintenance schedules to technicians, update records,
-    and send notification emails using a user-friendly template.
-    """
-
-    # Fetch pending schedule data
-    schedule_pending_data = frappe.db.get_all(
-        "Schedule Assign",
-        fields=["*"],
-        filters={
-            "parent": name,
-            "email": 0,
-            "technician": ["!=", ""]
-        }
-    )
-
-    # Prepare email details and schedules for update
-    emails_to_send = []
-    schedules_to_update = []
-
-    for schedule in schedule_pending_data:
-        frappe.db.set_value("Maintenance Schedule Detail", schedule.id, "custom_technician", schedule.technician)
-        frappe.db.set_value("Maintenance Schedule Detail", schedule.id, "custom_technician_email", schedule.email_id)
-        if schedule["email"] == 0 and schedule["technician"]:
-            # Get technician name and locality
-            technician_name = frappe.db.get_value("Employee", schedule.technician, "first_name")
-            locality = frappe.db.get_value("Maintenance Schedule", schedule.maintenance_schedule_id, "custom_locality")
-            schedule_date = frappe.utils.formatdate(schedule["schedule_date"], "dd-mm-yyyy")
-
-            # Generate email content using a template function
-            message = get_email_template(
-                technician=technician_name,
-                item=schedule["item"],
-                schedule_date=schedule_date,
-                assigned_by=frappe.session.user,
-                locality=locality
-            )
-
-            # Add email to the queue
-            emails_to_send.append({
-                "recipients": schedule["email_id"],
-                "subject": "Maintenance Schedule Assignment",
-                "message": message,
-            })
-
-            # Update schedule email status
-            schedules_to_update.append(schedule["id"])
-            frappe.db.set_value("Maintenance Schedule Detail", schedule.id, "custom_email", 1)
-            frappe.db.set_value("Schedule Assign", schedule.name, "email", 1)
-
-    # Enqueue emails for background sending
-    if emails_to_send:
-        frappe.enqueue(
-            send_bulk_emails,
-            emails_to_send=emails_to_send,
-            timeout=300
-        )
-        frappe.msgprint("Schedule is assigned.")
 
 
 def send_bulk_emails(emails_to_send):
