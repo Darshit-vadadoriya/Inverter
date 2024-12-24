@@ -11,8 +11,11 @@
   "schedule_date",
   "technician",
   "email_id",
-  "email",
-  "id"
+  "id",
+  "column_break_jjup",
+  "customer",
+  "locality",
+  "email"
  ],
  "fields": [
   {
@@ -61,12 +64,28 @@
    "fieldtype": "Data",
    "label": "ID",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_jjup",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "locality",
+   "fieldtype": "Link",
+   "label": "Locality",
+   "options": "Locality"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-12-14 03:38:22.589405",
+ "modified": "2024-12-23 23:43:42.880457",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Schedule Assign",

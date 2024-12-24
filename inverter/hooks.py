@@ -156,7 +156,8 @@ doc_events = {
     },
     "Purchase Order": {
         "on_submit": "inverter.apis.purchase_order.send_purchase_order_email"
-    }
+    },
+    
 }
 
 

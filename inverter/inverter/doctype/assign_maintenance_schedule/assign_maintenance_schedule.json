@@ -13,8 +13,12 @@
   "get_schedules",
   "company",
   "section_break_lqtn",
+  "locality",
+  "column_break_sqmi",
+  "month",
+  "column_break_rrwk",
+  "section_break_zckf",
   "schedule_assignment",
-  "assign_schedule",
   "amended_from"
  ],
  "fields": [
@@ -60,12 +64,6 @@
    "options": "Schedule Assign"
   },
   {
-   "depends_on": "eval:doc.docstatus<1",
-   "fieldname": "assign_schedule",
-   "fieldtype": "Button",
-   "label": "Assign Schedule"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -81,12 +79,36 @@
    "fieldtype": "Select",
    "label": "Series",
    "options": "MAINT-MSA-.YYYY.-"
+  },
+  {
+   "fieldname": "locality",
+   "fieldtype": "Link",
+   "label": "Locality",
+   "options": "Locality"
+  },
+  {
+   "fieldname": "column_break_sqmi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_rrwk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_zckf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "label": "Month",
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-12-14 02:33:07.153821",
+ "modified": "2024-12-24 23:00:48.785694",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Assign Maintenance Schedule",
