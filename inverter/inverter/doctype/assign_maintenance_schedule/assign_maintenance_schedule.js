@@ -60,71 +60,138 @@ frappe.ui.form.on("Assign Maintenance Schedule", {
         })
     },
     
-    on_submit: function(frm) {
-        // Initialize an empty object to store customer-wise outstanding amounts
-        var customer_outstanding = {};
+    // before_submit: function(frm) {
+    //     // Initialize an empty object to store customer-wise outstanding amounts
+    //     var customer_outstanding = {};
     
-        // Loop through the rows in the 'schedule_assignment' child table
-        frm.doc.schedule_assignment.forEach(function(row) {
-            if (row.customer && row.outstanding_amount) {  // Check if the row has customer and outstanding_amount
-                if (!customer_outstanding[row.customer]) {
-                    customer_outstanding[row.customer] = 0;  // Initialize the customer if not already present
+    //     // Loop through the rows in the 'schedule_assignment' child table
+    //     frm.doc.schedule_assignment.forEach(function(row) {
+    //         if (row.customer && row.outstanding_amount) {  // Check if the row has customer and outstanding_amount
+    //             if (!customer_outstanding[row.customer]) {
+    //                 customer_outstanding[row.customer] = 0;  // Initialize the customer if not already present
+    //             }
+    //             customer_outstanding[row.customer] += row.outstanding_amount;  // Add the outstanding amount to the customer
+    //         }
+    //     });
+    
+    //     // Prepare the message to display the customer-wise outstanding amounts with a table
+    //     var outstanding_message = `
+    //         <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+    //             <thead>
+    //                 <tr style="background-color: #f1f1f1;">
+    //                     <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">No</th>
+    //                     <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Customer Name</th>
+    //                     <th style="padding: 8px; text-align: right; border: 1px solid #ddd;">Outstanding Amount</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //     `;
+    
+    //     var index = 1;
+    //     for (var customer in customer_outstanding) {
+    //         if (customer_outstanding.hasOwnProperty(customer)) {
+    //             outstanding_message += `
+    //                 <tr>
+    //                     <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${index}</td>
+    //                     <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${customer}</td>
+    //                     <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${frappe.format(customer_outstanding[customer], {fieldtype: 'Currency'})}</td>
+    //                 </tr>
+    //             `;
+    //             index++;
+    //         }
+    //     }
+    
+    //     outstanding_message += `
+    //             </tbody>
+    //         </table>
+    //     `;
+    
+    //     // Create and show the dialog box with the customer-wise outstanding amounts
+    //     var dialog = new frappe.ui.Dialog({
+    //         title: "Customer Wise Outstanding Amounts",
+    //         fields: [
+    //             {
+    //                 fieldtype: 'HTML',
+    //                 fieldname: 'outstanding_message',
+    //                 options: outstanding_message
+    //             }
+    //         ],
+    //         primary_action: function() {
+    //             dialog.hide();
+    //         },
+    //         primary_action_label: 'Close'
+    //     });
+    
+    //     dialog.show();
+    
+    // },
+
+
+
+    refresh: function(frm) {
+        $("[data-label='Submit']").click(function(){
+            console.log("Hello===============")
+        
+            // Initialize an empty object to store customer-wise outstanding amounts
+            var customer_outstanding = {};
+        
+            // Loop through the rows in the 'schedule_assignment' child table
+            frm.doc.schedule_assignment.forEach(function(row) {
+                if (row.customer && row.outstanding_amount) {  // Check if the row has customer and outstanding_amount
+                    if (!customer_outstanding[row.customer]) {
+                        customer_outstanding[row.customer] = 0;  // Initialize the customer if not already present
+                    }
+                    customer_outstanding[row.customer] += row.outstanding_amount;  // Add the outstanding amount to the customer
                 }
-                customer_outstanding[row.customer] += row.outstanding_amount;  // Add the outstanding amount to the customer
-            }
-        });
-    
-        // Prepare the message to display the customer-wise outstanding amounts with a table
-        var outstanding_message = `
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
-                <thead>
-                    <tr style="background-color: #f1f1f1;">
-                        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">No</th>
-                        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Customer Name</th>
-                        <th style="padding: 8px; text-align: right; border: 1px solid #ddd;">Outstanding Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-    
-        var index = 1;
-        for (var customer in customer_outstanding) {
-            if (customer_outstanding.hasOwnProperty(customer)) {
-                outstanding_message += `
-                    <tr>
-                        <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${index}</td>
-                        <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${customer}</td>
-                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${frappe.format(customer_outstanding[customer], {fieldtype: 'Currency'})}</td>
-                    </tr>
-                `;
-                index++;
-            }
-        }
-    
-        outstanding_message += `
-                </tbody>
-            </table>
-        `;
-    
-        // Create and show the dialog box with the customer-wise outstanding amounts
-        var dialog = new frappe.ui.Dialog({
-            title: "Customer Wise Outstanding Amounts",
-            fields: [
-                {
-                    fieldtype: 'HTML',
-                    fieldname: 'outstanding_message',
-                    options: outstanding_message
+            });
+        
+            // Prepare the message to display the customer-wise outstanding amounts with a table
+            var outstanding_message = `
+                
+                
+                <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+                    <thead>
+                        <tr style="background-color: #f1f1f1;">
+                            <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">No</th>
+                            <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Customer Name</th>
+                            <th style="padding: 8px; text-align: right; border: 1px solid #ddd;">Outstanding Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+        
+            var index = 1;
+            for (var customer in customer_outstanding) {
+                if (customer_outstanding.hasOwnProperty(customer)) {
+                    outstanding_message += `
+                        <tr>
+                            <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${index}</td>
+                            <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${customer}</td>
+                            <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${frappe.format(customer_outstanding[customer], {fieldtype: 'Currency'})}</td>
+                        </tr>
+                    `;
+                    index++;
                 }
-            ],
-            primary_action: function() {
-                dialog.hide();
-            },
-            primary_action_label: 'Close'
-        });
+            }
+        
+            outstanding_message += `
+                    </tbody>
+                </table>
+
+                <br>
+                <b>Are you sure you want to submit this document?</b>
+            `;
+
+            console.log(outstanding_message);
+           setTimeout(() => {
+            $(".modal-body").html(outstanding_message)
+           }, 150);
+        })
     
-        dialog.show();
+     
     
-    }
+    },
+
 
 });
 
