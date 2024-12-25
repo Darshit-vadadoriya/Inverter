@@ -14,6 +14,7 @@
   "id",
   "column_break_jjup",
   "customer",
+  "outstandingamount",
   "locality",
   "email"
  ],
@@ -49,7 +50,6 @@
    "fetch_from": "technician.prefered_email",
    "fieldname": "email_id",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Email Id"
   },
   {
@@ -72,20 +72,27 @@
   {
    "fieldname": "customer",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Customer",
    "options": "Customer"
   },
   {
    "fieldname": "locality",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Locality",
    "options": "Locality"
+  },
+  {
+   "fieldname": "outstandingamount",
+   "fieldtype": "Currency",
+   "label": "Outstanding Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-12-23 23:43:42.880457",
+ "modified": "2024-12-25 22:49:36.203382",
  "modified_by": "Administrator",
  "module": "Inverter",
  "name": "Schedule Assign",
