@@ -62,25 +62,29 @@ frappe.ui.form.on("Assign Maintenance Schedule", {
     
 
     refresh: function(frm) {
-        $("[data-label='Submit']").click(function(){
-          
-            // Initialize an empty object to store customer-wise outstanding amounts
-            var customer_outstanding = {};
+       
+        $("[data-label='Submit']").click(function() {
+            // Initialize an array to store unique customer-wise outstanding amounts
+            var customer_outstanding = [];
+        
+            // Keep track of customers already added to avoid duplicates
+            var added_customers = {};
         
             // Loop through the rows in the 'schedule_assignment' child table
             frm.doc.schedule_assignment.forEach(function(row) {
                 if (row.customer && row.outstandingamount) {  // Check if the row has customer and outstandingamount
-                    if (!customer_outstanding[row.customer]) {
-                        customer_outstanding[row.customer] = 0;  // Initialize the customer if not already present
+                    if (!added_customers[row.customer]) { // If the customer is not already added
+                        customer_outstanding.push({
+                            customer: row.customer,
+                            outstandingamount: row.outstandingamount
+                        });
+                        added_customers[row.customer] = true; // Mark the customer as added
                     }
-                    customer_outstanding[row.customer] += row.outstandingamount;  // Add the outstanding amount to the customer
                 }
             });
         
             // Prepare the message to display the customer-wise outstanding amounts with a table
             var outstanding_message = `
-                
-                
                 <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
                     <thead>
                         <tr style="background-color: #f1f1f1;">
@@ -92,33 +96,31 @@ frappe.ui.form.on("Assign Maintenance Schedule", {
                     <tbody>
             `;
         
-            var index = 1;
-            for (var customer in customer_outstanding) {
-                if (customer_outstanding.hasOwnProperty(customer)) {
-                    outstanding_message += `
-                        <tr>
-                            <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${index}</td>
-                            <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${customer}</td>
-                            <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${frappe.format(customer_outstanding[customer], {fieldtype: 'Currency'})}</td>
-                        </tr>
-                    `;
-                    index++;
-                }
-            }
+            customer_outstanding.forEach(function(item, index) {
+                outstanding_message += `
+                    <tr>
+                        <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${index + 1}</td>
+                        <td style="padding: 8px; text-align: left; border: 1px solid #ddd;">${item.customer}</td>
+                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">${frappe.format(item.outstandingamount, {fieldtype: 'Currency'})}</td>
+                    </tr>
+                `;
+            });
         
             outstanding_message += `
                     </tbody>
                 </table>
-
                 <br>
                 <b>Are you sure you want to submit this document?</b>
             `;
-
+        
             console.log(outstanding_message);
-           setTimeout(() => {
-            $(".modal-body").html(outstanding_message)
-           }, 150);
-        })
+        
+            // Update the modal body with the outstanding message
+            setTimeout(() => {
+                $(".modal-body").html(outstanding_message);
+            }, 150);
+        });
+        
     
      
     
