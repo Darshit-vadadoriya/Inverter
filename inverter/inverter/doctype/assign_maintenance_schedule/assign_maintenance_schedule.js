@@ -49,7 +49,7 @@ frappe.ui.form.on("Assign Maintenance Schedule", {
                         email_id:data.custom_technician_email,
                         email:data.custom_email,
                         customer:data.customer,
-                        outstandingamount:data.outstandingamount,
+                        outstandingamount:data.outstanding_amount,
                         locality:data.custom_locality,
                         id:data.name
                     })
